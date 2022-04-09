@@ -239,6 +239,8 @@ String host = "async-esp32fs";
 
 AsyncWebServer server(HTTP_PORT);
 DNSServer dnsServer;
+WiFiServer TelnetServer(23); // setup Telenet port
+WiFiClient Telnet;
 
 AsyncEventSource events("/events");
 
@@ -480,8 +482,10 @@ void heartBeatPrint()
 #else
   static int num = 1;
 
-  if (WiFi.status() == WL_CONNECTED)
+  if (WiFi.status() == WL_CONNECTED){
     outln(F("H"));        // H means connected to WiFi
+    toutln("H");
+  }
   else
     out(F("F"));        // F means not connected to WiFi
 
@@ -1087,9 +1091,14 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
 
 
 
+
+
   
   AsyncElegantOTA.begin(&server);
   server.begin();
+
+  TelnetServer.begin();
+
   
 
 
@@ -1132,6 +1141,25 @@ void wifiManagerLoop(){
 
   check_status();
   AsyncElegantOTA.loop();
+
+  // Telnet Loop
+  if (TelnetServer.hasClient()){ // client is connected
+  out("client is connected!");
+  delay(1000);
+  
+    if (!TelnetServer || !Telnet.connected()) {
+      if (Telnet) Telnet.stop(); // client disconnected
+      Telnet = TelnetServer.available(); //ready for new client
+      out("ready for new client");
+      tout("Welcome!");
+    } else{
+      TelnetServer.available().stop(); // have client, block next
+      out("client connected");
+    }
+  }
+
+
+
 
 
 }

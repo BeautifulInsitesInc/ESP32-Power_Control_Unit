@@ -1,6 +1,6 @@
 #ifndef TELNET_H // This is so if it included in mulitple cpp files, the code will not be duplicated
 #define TELNET_H
-
+/*
 // include this file in the main.cpp
 WiFiServer TelnetServer(23); // setup Telenet port
 WiFiClient Telnet;
@@ -29,4 +29,5 @@ void telnetLoop(){// Handle Telnet - put on main loop
   }
 }
 
+*/
 #endif
