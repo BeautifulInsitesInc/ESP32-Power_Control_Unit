@@ -1,9 +1,21 @@
-#include <Arduino.h>
+#include "main.h"
 
-void setup() {
-  // put your setup code here, to run once:
+void setup()
+{
+  Serial.begin(115200);
+  outln("Starting");
+  displaySetup();
+  outln("Displaying Splash Screen");
+  wifiManagerSetup(); // WiFi Manager, SPIFF uploader, OTA Updates
+  //telnetSetup();
+  
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop()
+{
+  
+  wifiManagerLoop();
+  //telnetLoop();
+
+  
 }
