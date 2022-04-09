@@ -15,8 +15,6 @@
 #include <ESPmDNS.h>
 #include <WiFiMulti.h>
 
-#include "telnet_server.h" // initalizes the Telnet Server
-
 WiFiMulti wifiMulti;
 
 String password = "password";
@@ -90,7 +88,7 @@ DoubleResetDetector* drd = NULL;//DoubleResetDetector drd(DRD_TIMEOUT, DRD_ADDRE
 //////
 
 // SSID and PW for Config Portal
-String ssid = "TTGO-1_" + String((uint32_t)ESP.getEfuseMac(), HEX);
+String ssid = "MPCU-" + String((uint32_t)ESP.getEfuseMac(), HEX);
 
 
 // SSID and PW for your Router
@@ -390,15 +388,24 @@ uint8_t connectMultiWiFi()
     LOGERROR3(F("Channel:"), WiFi.channel(), F(",IP address:"), WiFi.localIP() );
 
 
-    #ifdef LCD_DISPLAY
-      lcdClearText();
-      lcdoutln("STA MODE");
-      tft.setTextSize(1); lcdoutln();
-      tft.setTextSize(2); lcdout("   "); lcdoutln(WiFi.localIP());
-      tft.setTextSize(1);
-      lcdout(" /edit"); lcdout(" ("); lcdout(http_username); lcdout("/"); lcdout(http_password);lcdout(")");
-      lcdoutln("  /update  /webserial");  
-      lcdout("  ");lcdout(Router_SSID); lcdout(" / "); lcdoutln(Router_Pass);
+    #ifdef LCD_SCREEN
+      rectangle();
+      Display.setCursor(20, LINE1);
+      Display.println("STA MODE");
+      normalText();
+      Display.setCursor(10,LINE2);
+      Display.println(WiFi.localIP());
+      Display.display();
+      Display.setTextSize(1);
+      Display.setFont();
+      Display.setCursor(0,42);
+      Display.print("SSID:"); Display.println(Router_SSID);
+      Display.setCursor(0,52);
+      Display.println("Telnet Access Port 23");
+      Display.display();
+
+
+      //lcdout("  ");lcdout(Router_SSID); lcdout(" / "); lcdoutln(Router_Pass);
 
     #endif
 
@@ -484,7 +491,7 @@ void heartBeatPrint()
 
   if (WiFi.status() == WL_CONNECTED){
     outln(F("H"));        // H means connected to WiFi
-    toutln("H");
+    //toutln("H");
   }
   else
     out(F("F"));        // F means not connected to WiFi
@@ -816,17 +823,20 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
 
 
 
-    #ifdef LCD_DISPLAY
-      lcdClearText();
-    
-      lcdoutln(" AP MODE");
-      tft.setTextSize(1); lcdoutln();
-      tft.setTextSize(2); lcdoutln("   192.168.4.1");
-      tft.setTextSize(1); 
-      lcdout("  "); lcdout(ssid); lcdout(" / "); lcdoutln(password);
-      //digitalWrite(LCD_LIGHT_PIN, 0);
-      
-      
+    #ifdef LCD_SCREEN
+      rectangle();
+      Display.setCursor(22, LINE1);
+      Display.println("AP MODE");
+      normalText();
+      Display.setCursor(17,LINE2);
+      Display.println("192.168.4.1");
+      Display.setFont();
+      Display.setCursor(0, 42);
+      Display.setTextSize(1); 
+      Display.print("SSID: ");Display.println(ssid);
+      Display.setCursor(0,52);
+      Display.print("PASS: '"); Display.print(password); Display.println("'");
+      Display.display();
 
     #endif
 
@@ -942,13 +952,21 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
     {
       outln(F("ConnectMultiWiFi in setup"));
      
-    #ifdef LCD_DISPLAY
-      lcdClearText();
-      lcdoutln("STA MODE");
-      tft.setTextSize(1); lcdoutln();
-      tft.setTextSize(2); lcdoutln("   CONNECTING..."); 
-      tft.setTextSize(1);
-      lcdout("  ");lcdout(Router_SSID); lcdout(" / "); lcdoutln(Router_Pass);
+    #ifdef LCD_SCREEN
+      rectangle();
+      Display.setCursor(20, LINE1);
+      Display.println("STA MODE");
+      normalText();
+      Display.setCursor(0, LINE2);
+      Display.println("CONNECTING...");
+      Display.display(); 
+      Display.setFont();
+      Display.setTextSize(1);
+      Display.setCursor(0,42);
+      Display.print("SSID: "); Display.println(Router_SSID);
+      Display.setCursor(0,52);
+      Display.print("PASS: '"); Display.print(Router_Pass); Display.print("'");
+      Display.display();
 
     #endif
 
@@ -1083,6 +1101,9 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
     if (index + len == total)
       outln("BodyEnd: " + total);
   });
+
+
+
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", "Hello World!");

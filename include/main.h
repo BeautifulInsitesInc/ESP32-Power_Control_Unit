@@ -20,9 +20,9 @@
 
 // --- End Debugging ---
 
-#define SCREENOUTPUT// Comment out if no display
+#define LCD_SCREEN// Comment out if no display
 
-#ifdef SCREENOUTPUT 
+#ifdef LCD_SCREEN 
   #define sout(x) Screen.print(x)
   #define soutln(x) Screen.println(x)
 #else 
