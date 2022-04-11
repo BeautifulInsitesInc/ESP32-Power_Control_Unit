@@ -5,7 +5,6 @@
 #include <AsyncTCP.h>
 #include <AsyncElegantOTA.h>
 
-
 #define ESP_ASYNC_WIFIMANAGER_VERSION_MIN_TARGET      "ESPAsync_WiFiManager v1.12.2"
 #define ESP_ASYNC_WIFIMANAGER_VERSION_MIN             1012002
 #define _ESPASYNC_WIFIMGR_LOGLEVEL_    3// Use from 0 to 4. Higher number, more debugging messages and memory usage.
@@ -235,7 +234,17 @@ String host = "async-esp32fs";
 
 #define HTTP_PORT     80
 
+
+//*****************************************
+//**********  DEFINE SERVERS **************
+//*****************************************
+
+
+
+
 AsyncWebServer server(HTTP_PORT);
+AsyncWebSocket ws("/ws");
+AsyncWebSocketClient* wsClient;
 DNSServer dnsServer;
 WiFiServer TelnetServer(23); // setup Telenet port
 WiFiClient Telnet;
@@ -277,9 +286,28 @@ WiFi_STA_IPConfig WM_STA_IPconfig;
 
 
 
+// ********** WEB SOCKET EVENT ***************************
+
+void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+  if(type == WS_EVT_CONNECT){
+    wsClient = client;
+    out("Websocket just recieved somthing!");
+  } else if(type == WS_EVT_DISCONNECT){
+    wsClient = nullptr;
+  }
+}
 
 
-
+uint64_t counter = 0;
+void websocketloop() {
+  // If client is connected ...
+  if(wsClient != nullptr && wsClient->canSend()) {
+    // .. send hello message :-)
+    wsClient->text("Hello client");
+  }
+  // Wait 10 ms
+  delay(10);
+}
 
 
 
@@ -332,7 +360,7 @@ void configWiFi(WiFi_STA_IPConfig in_WM_STA_IPconfig)
 uint8_t connectMultiWiFi()
 {
   // For ESP32 core v1.0.6, must be >= 500
-  #define WIFI_MULTI_1ST_CONNECT_WAITING_MS           800L  // For ESP32, this better be 0 to shorten the connect time.
+  #define WIFI_MULTI_1ST_CONNECT_WAITING_MS           0  //800LFor ESP32, this better be 0 to shorten the connect time.
   #define WIFI_MULTI_CONNECT_WAITING_MS                   500L
 
   uint8_t status;
@@ -648,19 +676,19 @@ void saveConfigData()
 
 
 void wifiManagerSetup(){
-pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
+  pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
   out(F("\nStarting Async_ESP32_FSWebServer_DRD using ")); out(FS_Name);
   out(F(" on ")); outln(ARDUINO_BOARD);
   outln(ESP_ASYNC_WIFIMANAGER_VERSION);
   outln(ESP_DOUBLE_RESET_DETECTOR_VERSION);
 
-#if defined(ESP_ASYNC_WIFIMANAGER_VERSION_INT)
-  if (ESP_ASYNC_WIFIMANAGER_VERSION_INT < ESP_ASYNC_WIFIMANAGER_VERSION_MIN)
-  {
-    out("Warning. Must use this example on Version later than : ");
-    outln(ESP_ASYNC_WIFIMANAGER_VERSION_MIN_TARGET);
-  }
-#endif
+  #if defined(ESP_ASYNC_WIFIMANAGER_VERSION_INT)
+    if (ESP_ASYNC_WIFIMANAGER_VERSION_INT < ESP_ASYNC_WIFIMANAGER_VERSION_MIN)
+    {
+      out("Warning. Must use this example on Version later than : ");
+      outln(ESP_ASYNC_WIFIMANAGER_VERSION_MIN_TARGET);
+    }
+  #endif
 
   Serial.setDebugOutput(false);
 
@@ -677,11 +705,11 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
       // prevents debug info from the library to hide err message.
       delay(100);
       
-#if USE_LITTLEFS
-      outln(F("LittleFS failed!. Please use SPIFFS or EEPROM. Stay forever"));
-#else
-      outln(F("SPIFFS failed!. Please use LittleFS or EEPROM. Stay forever"));
-#endif
+  #if USE_LITTLEFS
+        outln(F("LittleFS failed!. Please use SPIFFS or EEPROM. Stay forever"));
+  #else
+        outln(F("SPIFFS failed!. Please use LittleFS or EEPROM. Stay forever"));
+  #endif
 
       while (true)
       {
@@ -725,12 +753,12 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
   
   ESPAsync_WiFiManager ESPAsync_wifiManager(&server, &dnsServer, "AsyncESP32-FSWebServer");
 
-#if USE_CUSTOM_AP_IP 
-  //set custom ip for portal
-  // New in v1.4.0
-  ESPAsync_wifiManager.setAPStaticIPConfig(WM_AP_IPconfig);
-  //////
-#endif
+  #if USE_CUSTOM_AP_IP 
+    //set custom ip for portal
+    // New in v1.4.0
+    ESPAsync_wifiManager.setAPStaticIPConfig(WM_AP_IPconfig);
+    //////
+  #endif
 
   ESPAsync_wifiManager.setMinimumSignalQuality(-1);
 
@@ -738,17 +766,17 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
   ESPAsync_wifiManager.setConfigPortalChannel(0);
   //////
 
-#if !USE_DHCP_IP    
-    // Set (static IP, Gateway, Subnetmask, DNS1 and DNS2) or (IP, Gateway, Subnetmask). New in v1.0.5
-    // New in v1.4.0
-    ESPAsync_wifiManager.setSTAStaticIPConfig(WM_STA_IPconfig);
-    //////
-#endif
+  #if !USE_DHCP_IP    
+      // Set (static IP, Gateway, Subnetmask, DNS1 and DNS2) or (IP, Gateway, Subnetmask). New in v1.0.5
+      // New in v1.4.0
+      ESPAsync_wifiManager.setSTAStaticIPConfig(WM_STA_IPconfig);
+      //////
+  #endif
 
-  // New from v1.1.1
-#if USING_CORS_FEATURE
-  ESPAsync_wifiManager.setCORSHeader("Your Access-Control-Allow-Origin");
-#endif
+    // New from v1.1.1
+  #if USING_CORS_FEATURE
+    ESPAsync_wifiManager.setCORSHeader("Your Access-Control-Allow-Origin");
+  #endif
 
   // We can't use WiFi.SSID() in ESP32as it's only valid after connected.
   // SSID and Password stored in ESP32 wifi_ap_record_t and wifi_config_t are also cleared in reboot
@@ -782,23 +810,23 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
     ESPAsync_wifiManager.setConfigPortalTimeout(120); //If no access point name has been previously entered disable timeout.
     outln(F("Got stored Credentials. Timeout 120s for Config Portal"));
 
-#if USE_ESP_WIFIMANAGER_NTP      
-    if ( strlen(WM_config.TZ_Name) > 0 )
-    {
-      LOGERROR3(F("Saving current TZ_Name ="), WM_config.TZ_Name, F(", TZ = "), WM_config.TZ);
+  #if USE_ESP_WIFIMANAGER_NTP      
+      if ( strlen(WM_config.TZ_Name) > 0 )
+      {
+        LOGERROR3(F("Saving current TZ_Name ="), WM_config.TZ_Name, F(", TZ = "), WM_config.TZ);
 
-  #if ESP8266
-      configTime(WM_config.TZ, "pool.ntp.org"); 
-  #else
-      //configTzTime(WM_config.TZ, "pool.ntp.org" );
-      configTzTime(WM_config.TZ, "time.nist.gov", "0.pool.ntp.org", "1.pool.ntp.org");
-  #endif  
-    }
-    else
-    {
-      outln(F("Current Timezone is not set. Enter Config Portal to set."));
-    } 
-#endif 
+    #if ESP8266
+        configTime(WM_config.TZ, "pool.ntp.org"); 
+    #else
+        //configTzTime(WM_config.TZ, "pool.ntp.org" );
+        configTzTime(WM_config.TZ, "time.nist.gov", "0.pool.ntp.org", "1.pool.ntp.org");
+    #endif  
+      }
+      else
+      {
+        outln(F("Current Timezone is not set. Enter Config Portal to set."));
+      } 
+  #endif 
   }
   else
   {
@@ -844,11 +872,11 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
 
 
 
-#if USE_CUSTOM_AP_IP    
-    out(APStaticIP);
-#else
-    out(F("192.168.4.1"));
-#endif
+  #if USE_CUSTOM_AP_IP    
+      out(APStaticIP);
+  #else
+      out(F("192.168.4.1"));
+  #endif
 
     out(F(", SSID = "));
     out(ssid);
@@ -891,37 +919,37 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
       }
     }
 
-#if USE_ESP_WIFIMANAGER_NTP      
-    String tempTZ   = ESPAsync_wifiManager.getTimezoneName();
+  #if USE_ESP_WIFIMANAGER_NTP      
+      String tempTZ   = ESPAsync_wifiManager.getTimezoneName();
 
-    if (strlen(tempTZ.c_str()) < sizeof(WM_config.TZ_Name) - 1)
-      strcpy(WM_config.TZ_Name, tempTZ.c_str());
-    else
-      strncpy(WM_config.TZ_Name, tempTZ.c_str(), sizeof(WM_config.TZ_Name) - 1);
+      if (strlen(tempTZ.c_str()) < sizeof(WM_config.TZ_Name) - 1)
+        strcpy(WM_config.TZ_Name, tempTZ.c_str());
+      else
+        strncpy(WM_config.TZ_Name, tempTZ.c_str(), sizeof(WM_config.TZ_Name) - 1);
 
-    const char * TZ_Result = ESPAsync_wifiManager.getTZ(WM_config.TZ_Name);
-    
-    if (strlen(TZ_Result) < sizeof(WM_config.TZ) - 1)
-      strcpy(WM_config.TZ, TZ_Result);
-    else
-      strncpy(WM_config.TZ, TZ_Result, sizeof(WM_config.TZ_Name) - 1);
-         
-    if ( strlen(WM_config.TZ_Name) > 0 )
-    {
-      LOGERROR3(F("Saving current TZ_Name ="), WM_config.TZ_Name, F(", TZ = "), WM_config.TZ);
+      const char * TZ_Result = ESPAsync_wifiManager.getTZ(WM_config.TZ_Name);
+      
+      if (strlen(TZ_Result) < sizeof(WM_config.TZ) - 1)
+        strcpy(WM_config.TZ, TZ_Result);
+      else
+        strncpy(WM_config.TZ, TZ_Result, sizeof(WM_config.TZ_Name) - 1);
+          
+      if ( strlen(WM_config.TZ_Name) > 0 )
+      {
+        LOGERROR3(F("Saving current TZ_Name ="), WM_config.TZ_Name, F(", TZ = "), WM_config.TZ);
 
-#if ESP8266
-      configTime(WM_config.TZ, "pool.ntp.org"); 
-#else
-      //configTzTime(WM_config.TZ, "pool.ntp.org" );
-      configTzTime(WM_config.TZ, "time.nist.gov", "0.pool.ntp.org", "1.pool.ntp.org");
-#endif
-    }
-    else
-    {
-      LOGERROR(F("Current Timezone Name is not set. Enter Config Portal to set."));
-    }
-#endif 
+  #if ESP8266
+        configTime(WM_config.TZ, "pool.ntp.org"); 
+  #else
+        //configTzTime(WM_config.TZ, "pool.ntp.org" );
+        configTzTime(WM_config.TZ, "time.nist.gov", "0.pool.ntp.org", "1.pool.ntp.org");
+  #endif
+      }
+      else
+      {
+        LOGERROR(F("Current Timezone Name is not set. Enter Config Portal to set."));
+      }
+  #endif 
 
     // New in v1.4.0
     ESPAsync_wifiManager.getSTAStaticIPConfig(WM_STA_IPconfig);
@@ -975,6 +1003,8 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
 
 
       connectMultiWiFi();
+      outln("Just ran connectMulitwif");
+      toutln("Just ran connectMulitwif");
     }
   }
 
@@ -1105,49 +1135,6 @@ pinMode(LED_BUILTIN, OUTPUT);  //set led pin as output
 
 
 
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(200, "text/plain", "Hello World!");
-  });
-
-
-
-
-
-
-  
-  AsyncElegantOTA.begin(&server);
-  server.begin();
-
-  TelnetServer.begin();
-
-  
-
-
-
-
-
-
-  //////
-
-  outln(F("HTTP server started @ "));
-  outln(WiFi.localIP());
-
-  outln(separatorLine);
-  outln("Open http://"); outln(WiFi.localIP());
-  toutln("/edit to see the file browser"); 
-  toutln("Using username = " + http_username + " and password = " + http_password);
-  toutln(separatorLine);
-
-  
-
-
-
-
-
-
-  digitalWrite(LED_BUILTIN, LOW);
-
-
 
 }
 
@@ -1162,7 +1149,9 @@ void wifiManagerLoop(){
 
   check_status();
   AsyncElegantOTA.loop();
+}
 
+void telnetLoop(){
   // Telnet Loop
   if (TelnetServer.hasClient()){ // client is connected
   out("client is connected!");
@@ -1179,12 +1168,7 @@ void wifiManagerLoop(){
     }
   }
 
-
-
-
-
 }
-
 
 
 

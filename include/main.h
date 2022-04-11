@@ -20,7 +20,7 @@
 
 // --- End Debugging ---
 
-#define LCD_SCREEN// Comment out if no display
+//#define LCD_SCREEN// Comment out if no display
 
 #ifdef LCD_SCREEN 
   #define sout(x) Screen.print(x)
@@ -33,7 +33,9 @@
 
 // ADDITIONAL FILES
 #include "display.h"
+#include "web_stuff.h"
 #include "wifi_manager.h"
-//#include "telnet_server.h"
+
+//#include "page_directs.h"
 
 #endif

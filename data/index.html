@@ -1,0 +1,81 @@
+<!DOCTYPE HTML><html>
+<head>
+  <title>CONCIERGE CONTROLLER V2.0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon"  type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+<body>
+  <div class="topnav">
+    <img class="logo" src="/cgl.jpg">
+    <h1>V2.0</h1>
+    <h3>UPDATE LINKS</h3>
+    <label class="switch">
+        <a href = "/update">UPDATE</a></br>
+        <a href = "/edit">EDIT</a></br>
+        <p>Telnet Debugging Port 23</p>
+
+    </label>
+    </div>
+
+
+
+
+  <div class="content">
+    <div class="card-grid">
+        
+        <div class="card">             
+            <p class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> OUTLET 1</p>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="16">
+                <span class="slider"></span>
+            </label>
+            <p class ="state">State: <span id="16s"></span></p>
+        </div>
+        <div class="card">
+            <p class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> OUTLET 2</p>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="17">
+                <span class="slider"></span>
+            </label>
+            <p class ="state">State: <span id="17s"></span></p>
+        </div>
+        <div class="card">
+            <p class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> OUTLET 3</p>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="18">
+                <span class="slider"></span>
+            </label>
+            <p class ="state">State: <span id="18s"></span></p>
+        </div>
+        <div class="card">
+            <p class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> OUTLET 4</p>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="19">
+                <span class="slider"></span>
+            </label>
+            <p class="state">State: <span id="19s"></span></p>
+        </div>
+        <div class="card">
+            <p class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> OUTLET 5</p>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="23">
+                <span class="slider"></span>
+            </label>
+            <p class ="state">State: <span id="23s"></span></p>
+        </div>
+        <div class="card">
+            <p class="card-title"><i class="fa-solid fa-plug-circle-bolt"></i> OUTLET 6</p>
+            <label class="switch">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="25">
+                <span class="slider"></span>
+            </label>
+            <p class="state">State: <span id="25s"></span></p>
+        </div>
+    </div>
+</div>
+<script src="/script.js"></script>
+</body>
+</html>
+
