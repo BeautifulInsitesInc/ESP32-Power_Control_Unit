@@ -1,5 +1,7 @@
 #include "main.h"
 
+
+
 void setup()
 {
   Serial.begin(115200);
@@ -8,18 +10,25 @@ void setup()
   outln("Displaying Splash Screen");
 
   wifiManagerSetup(); // WiFi Manager, SPIFF uploader, OTA Updates
-  #include "web_stuff.h"
-  #include "page_directs.h"
+ 
   //webStuffSetup();
 
   // Start Servers
-  ws.onEvent(onWsEvent); //websocket
-  server.addHandler(&ws);
+  //ws.onEvent(onWsEvent); //websocket
+  //server.addHandler(&ws);
+  //#include "web_stuff.h"
+
+  // Web Server Root URL
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html", "text/html");
+  });
+  
+  server.serveStatic("/", SPIFFS, "/");
 
   AsyncElegantOTA.begin(&server);
   server.begin();
   TelnetServer.begin();
-
+  initWebSocket();
 
 
 
@@ -48,10 +57,11 @@ void loop()
   wifiManagerLoop();
   AsyncElegantOTA.loop();
   telnetLoop();
-
+  
+  
   //websocketloop();
 
-  //webStuffLoop();
+  webStuffLoop();
 
 
 

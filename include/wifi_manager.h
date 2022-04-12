@@ -242,10 +242,12 @@ String host = "async-esp32fs";
 
 
 
+
 AsyncWebServer server(HTTP_PORT);
-AsyncWebSocket ws("/ws");
-AsyncWebSocketClient* wsClient;
 DNSServer dnsServer;
+
+
+
 WiFiServer TelnetServer(23); // setup Telenet port
 WiFiClient Telnet;
 
@@ -255,6 +257,21 @@ String http_username = "admin";
 String http_password = "admin";
 
 String separatorLine = "===============================================================";
+
+/*
+server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html");
+  });
+  
+  
+// Route to load style.css file
+server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
+  request->send(SPIFFS, "/style.css", "text/css");
+});
+*/
+
+
+
 
 ///////////////////////////////////////////
 // New in v1.4.0
@@ -287,31 +304,6 @@ WiFi_STA_IPConfig WM_STA_IPconfig;
 
 
 // ********** WEB SOCKET EVENT ***************************
-
-void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
-  if(type == WS_EVT_CONNECT){
-    wsClient = client;
-    out("Websocket just recieved somthing!");
-  } else if(type == WS_EVT_DISCONNECT){
-    wsClient = nullptr;
-  }
-}
-
-
-uint64_t counter = 0;
-void websocketloop() {
-  // If client is connected ...
-  if(wsClient != nullptr && wsClient->canSend()) {
-    // .. send hello message :-)
-    wsClient->text("Hello client");
-  }
-  // Wait 10 ms
-  delay(10);
-}
-
-
-
-
 
 
 
