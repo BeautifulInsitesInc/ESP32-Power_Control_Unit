@@ -73,7 +73,7 @@ void notifyClients(String sliderValues) {
 
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
-  out("handlign a socket message");
+  tout("handlign a socket message");
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
     data[len] = 0;
@@ -87,6 +87,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     notifyClients(getSliderValues());
   }
   if (message.indexOf("2s") >= 0) {
+    tout("handlewebSocketmessage function called for 2s");
     sliderValue2 = message.substring(2);
     dutyCycle2 = map(sliderValue2.toInt(), 0, 100, 0, 255);
     Serial.println(dutyCycle2);
@@ -114,6 +115,8 @@ void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventTyp
       Serial.printf("WebSocket client #%u disconnected\n", client->id());
       break;
     case WS_EVT_DATA:
+      tout("its handling a message now");
+      
       handleWebSocketMessage(arg, data, len);
       break;
     case WS_EVT_PONG:
@@ -144,8 +147,8 @@ void initWebSocket() {
   server.addHandler(&ws);
 }
 
-
 uint64_t counter = 0;
+
 void websocketloop() {
   // If client is connected ...
   if(wsClient != nullptr && wsClient->canSend()) {

@@ -21,7 +21,7 @@ function initWebSocket() {
 
 function onOpen(event) {
     console.log('Connection opened');
-    /*websocket.send("states");*/
+    websocket.send("states");
     getValues();
 }
   

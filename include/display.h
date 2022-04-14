@@ -20,7 +20,7 @@
 // --- FONTS ---
 #include <Fonts/FreeSans9pt7b.h>
 #define FONT1 &FreeSans9pt7b
-#define LINE1 14
+#define LINE1 14 // pixles down for line 1 using font 1
 #define LINE2 32
 #define LINE3 47
 #define LINE4 62
