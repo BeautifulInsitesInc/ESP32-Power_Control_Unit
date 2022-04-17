@@ -46,12 +46,30 @@
 
 Adafruit_SSD1306 Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+String magic_word = "Dog";
+String previous_magic_word = "Cat";
+
+
+
 void rectangle(){
   Display.clearDisplay();
   Display.setFont(FONT1B);
   Display.setTextSize(1); 
   Display.setTextColor(BLACK);
   Display.fillRect(1, 1, 128, 15, WHITE);
+}
+
+void magicWord(){
+  rectangle();
+  Display.setCursor(7, LINE1);
+  Display.println(F("MAGICWORD"));
+  Display.display();
+  Display.setFont(FONT1);
+  Display.setTextColor(WHITE);
+  Display.setCursor(25,LINE2);
+  Display.println(magic_word);
+  Display.display();
+
 }
 
 void splashScreen() {

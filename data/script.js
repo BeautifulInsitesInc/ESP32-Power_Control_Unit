@@ -1,5 +1,7 @@
 var gateway = `ws://${window.location.hostname}/ws`;
 var websocket;
+
+// INITIALIZTION
 window.addEventListener('load', onLoad);
 
 function onLoad(event) {
@@ -21,7 +23,6 @@ function initWebSocket() {
 
 function onOpen(event) {
     console.log('Connection opened');
-    websocket.send("states");
     getValues();
 }
   
@@ -38,14 +39,26 @@ function updateSliderPWM(element) {
     document.getElementById("sliderValue"+sliderNumber).innerHTML = sliderValue;
     console.log(sliderValue);
     websocket.send(sliderNumber+"s"+sliderValue.toString());
+    console.log("Just sent this message to server: "); 
+    console.log(sliderNumber+"s"+sliderValue.toString());
 }
 
-
 function onMessage(event) {
+    console.log("Running Fuction onMessage(event): ");
     console.log(event.data);
     var myObj = JSON.parse(event.data);
     var keys = Object.keys(myObj)
-    console.log(myObj);
+
+    for (var i = 0; i < keys.length; i++){
+        var key = keys[i];
+        console.log("key : ");
+        console.log(key);
+        console.log("myObj[key]");
+        console.log(myObj[key]);
+        document.getElementById(key).innerHTML = myObj[key];
+        document.getElementById("slider"+ (i+1).toString()).value = myObj[key];
+    }
+    /*
     for (i in myObj.gpios){
         var output = myObj.gpios[i].output;
         var state = myObj.gpios[i].state;
@@ -60,6 +73,7 @@ function onMessage(event) {
             document.getElementById(output+"s").innerHTML = "OFF";
         }
     }
+    */
     
 }
 
@@ -73,7 +87,7 @@ function toggleCheckbox (element) {
     console.log(element.id);
     websocket.send(element.id);
     if (element.checked){
-        document.getElementById(element.id+"s").innerHTML = "ON";
+        document.getElementById(element.id+"s").innerHTML = "ON!";
     }
     else {
         document.getElementById(element.id+"s").innerHTML = "OFF"; 

@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="topnav">
-    <img class="logo" src="/cclogo.jpg">
+    <img class="logo" src="cclogo.jpg">
     <h1>Prototyping Power Control Center</h1>
     <h3>UPDATE LINKS</h3>
     
@@ -25,6 +25,15 @@
 
   <div class="content">
     <div class="card-grid">
+
+        <div class="card">             
+            <p class="card-title"><i class="fa-solid fa-lightbulb"></i> ONBOARD LED</p>
+            <label class="switch toggle">
+                <input type="checkbox" onchange="toggleCheckbox(this)" id="onboard_led">
+                <span class="slider toggle"></span>
+            </label>
+            <p class ="state">State: <span id="2s"></span></p>
+        </div>
         
         <div class="card">             
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 1</p>
@@ -82,7 +91,7 @@
             <p class="switch slide">
                 <input type="range" onchange="updateSliderPWM(this)" id="slider1" min="0" max="100" step="1" value ="0" class="slider slide">
             </p>
-            <p class="state">Speed: <span id="sliderValue1"></span> &percnt;</p>
+            <p class="state">Brightness: <span id="sliderValue1"></span> &percnt;</p>
         </div>
         <div class="card">
             <p class="card-title">12V DC #2</p>
@@ -103,14 +112,14 @@
             <p class="switch slide">
                 <input type="range" onchange="updateSliderPWM(this)" id="slider4" min="0" max="100" step="1" value ="0" class="slider slide">
             </p>
-            <p class="state">Speed: <span id="sliderValue1"></span> &percnt;</p>
+            <p class="state">Speed: <span id="sliderValue4"></span> &percnt;</p>
         </div>
         <div class="card">
             <p class="card-title">12V DC #5</p>
             <p class="switch slide">
                 <input type="range" onchange="updateSliderPWM(this)" id="slider5" min="0" max="100" step="1" value ="0" class="slider slide">
             </p>
-            <p class="state">Speed: <span id="sliderValue2"></span> &percnt;</p>
+            <p class="state">Speed: <span id="sliderValue5"></span> &percnt;</p>
         </div>
         <div class="card">
             <p class="card-title">12V DC #6</p>
@@ -118,7 +127,7 @@
             <p class="switch slide">
                 <input type="range" onchange="updateSliderPWM(this)" id="slider6" min="0" max="100" step="1" value ="0" class="slider slide">
             </p>
-            <p class="state">Speed: <span id="sliderValue3"></span> &percnt;</p>
+            <p class="state">Speed: <span id="sliderValue6"></span> &percnt;</p>
         </div>
     </div>
 </div>

@@ -300,7 +300,29 @@ typedef struct
 WiFi_AP_IPConfig  WM_AP_IPconfig;
 WiFi_STA_IPConfig WM_STA_IPconfig;
 
+void displayWifiConnection(){
+  #ifdef LCD_SCREEN
+      Display.clearDisplay();
+      rectangle();
+      Display.setCursor(20, LINE1);
+      Display.println("STA MODE");
+      normalText();
+      Display.setCursor(10,LINE2);
+      Display.println(WiFi.localIP());
+      Display.display();
+      Display.setTextSize(1);
+      Display.setFont();
+      Display.setCursor(0,42);
+      Display.print("SSID:"); Display.println(Router_SSID);
+      Display.setCursor(0,52);
+      Display.println("Telnet Access Port 23");
+      Display.display();
 
+
+      //lcdout("  ");lcdout(Router_SSID); lcdout(" / "); lcdoutln(Router_Pass);
+
+    #endif
+}
 
 
 // ********** WEB SOCKET EVENT ***************************
@@ -408,26 +430,7 @@ uint8_t connectMultiWiFi()
     LOGERROR3(F("Channel:"), WiFi.channel(), F(",IP address:"), WiFi.localIP() );
 
 
-    #ifdef LCD_SCREEN
-      rectangle();
-      Display.setCursor(20, LINE1);
-      Display.println("STA MODE");
-      normalText();
-      Display.setCursor(10,LINE2);
-      Display.println(WiFi.localIP());
-      Display.display();
-      Display.setTextSize(1);
-      Display.setFont();
-      Display.setCursor(0,42);
-      Display.print("SSID:"); Display.println(Router_SSID);
-      Display.setCursor(0,52);
-      Display.println("Telnet Access Port 23");
-      Display.display();
-
-
-      //lcdout("  ");lcdout(Router_SSID); lcdout(" / "); lcdoutln(Router_Pass);
-
-    #endif
+    displayWifiConnection();
 
 
 
@@ -684,8 +687,11 @@ void wifiManagerSetup(){
 
   Serial.setDebugOutput(false);
 
-  if (FORMAT_FILESYSTEM) 
-    FileFS.format();
+  if (FORMAT_FILESYSTEM) {
+     FileFS.format();
+     outln("FileSystem Formated!");
+  }
+   
 
   // Format FileFS if not yet
   if (!FileFS.begin(true))
@@ -844,6 +850,7 @@ void wifiManagerSetup(){
 
 
     #ifdef LCD_SCREEN
+      Display.clearDisplay();
       rectangle();
       Display.setCursor(22, LINE1);
       Display.println("AP MODE");
@@ -883,6 +890,8 @@ void wifiManagerSetup(){
     else
     {
       outln(F("WiFi connected...yeey :)"));
+      displayWifiConnection();
+      
     }
 
     // Stored  for later usage, from v1.1.0, but clear first
@@ -973,6 +982,7 @@ void wifiManagerSetup(){
       outln(F("ConnectMultiWiFi in setup"));
      
     #ifdef LCD_SCREEN
+      Display.clearDisplay();
       rectangle();
       Display.setCursor(20, LINE1);
       Display.println("STA MODE");
@@ -987,7 +997,6 @@ void wifiManagerSetup(){
       Display.setCursor(0,52);
       Display.print("PASS: '"); Display.print(Router_Pass); Display.print("'");
       Display.display();
-
     #endif
 
 

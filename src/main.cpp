@@ -1,7 +1,5 @@
 #include "main.h"
 
-
-
 void setup()
 {
   Serial.begin(115200);
@@ -9,16 +7,12 @@ void setup()
   displaySetup();
   outln("Displaying Splash Screen");
 
+  // Setup all the pins
+  pinSetup(); 
+
   wifiManagerSetup(); // WiFi Manager, SPIFF uploader, OTA Updates
- 
-  //webStuffSetup();
 
-  // Start Servers
-  //ws.onEvent(onWsEvent); //websocket
-  //server.addHandler(&ws);
-  //#include "web_stuff.h"
-
-  // Web Server Root URL
+   // Web Server Root URL
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/index.html", "text/html");
   });
@@ -26,30 +20,23 @@ void setup()
   server.serveStatic("/", SPIFFS, "/");
 
   AsyncElegantOTA.begin(&server);
+  
+  /* *********** start websocket server  ************
+  bind a handling function to our websocket endpoint, 
+  in order for our code to run when a websocket event occurs.
+  We do this by calling the onEvent method on our AsyncWebSocket object.
+   initializes the WebSocket protocol.
+  */
+  ws.onEvent(onEvent);
+  server.addHandler(&ws);
+
   server.begin();
   TelnetServer.begin();
-  initWebSocket();
-
-
-
-
-  outln(F("HTTP server started @ "));
-  outln(WiFi.localIP());
-
-  outln(separatorLine);
-  outln("Open http://"); outln(WiFi.localIP());
-  toutln("/edit to see the file browser"); 
-  toutln("Using username = " + http_username + " and password = " + http_password);
-  toutln(separatorLine);
-
-  
-
-
-
-
-
 
   digitalWrite(LED_BUILTIN, LOW);
+
+  dhtSetup();
+
 }
 
 void loop()
@@ -58,14 +45,50 @@ void loop()
   AsyncElegantOTA.loop();
   telnetLoop();
   
+  //getDHTReadings();
   
-  //websocketloop();
+/******** WEB SOCKET LOOP ******/
+ //;ws.loop(); server.handleClient();
+  //-----------------------------------------------
+  if(led_on == false) digitalWrite(LED_BUILTIN, LOW);
+  else digitalWrite(LED_BUILTIN, HIGH);
+  //-----------------------------------------------
+  String led_status = "OFF";
+  if(led_on == true) led_status = "ON";
+  JSONtxt = "{\"LEDonoff\":\""+led_status+"\"}";
+  // need to send it to the client now
+  //websocket.broadcastTXT(JSONtxt);
+  //AsyncWebSocket.broadcastTXT(JSONtxt);
+  //websocket.send(JSONtxt);
 
-  webStuffLoop();
+  //Slider update
+  ledcWrite(ledChannel1, dutyCycle1);
+  ledcWrite(ledChannel2, dutyCycle2);
+  ledcWrite(ledChannel3, dutyCycle3);
+  ledcWrite(ledChannel4, dutyCycle3);
+  ledcWrite(ledChannel5, dutyCycle3);
+  ledcWrite(ledChannel6, dutyCycle3);
 
 
 
 
+  if(magic_word != previous_magic_word){
+    magicWord();
+    previous_magic_word = magic_word;
+  } 
 
+
+
+  /*Note that we all call the cleanupClients() method. Here’s why 
+  (explanation from the ESPAsyncWebServer library GitHub page):
+  Browsers sometimes do not correctly close the WebSocket connection, 
+  even when the close() function is called in JavaScript. 
+  This will eventually exhaust the web server’s resources and will cause the server to crash.
+  Periodically calling the cleanupClients() function from the main loop()limits the number 
+  of clients by closing the oldest client when the maximum number of clients has been exceeded.
+  This can be called every cycle, however, if you wish to use less power, then calling as infrequently
+  as once per second is sufficient.
+  */
+  ws.cleanupClients();
   
 }
