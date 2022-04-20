@@ -19,69 +19,56 @@
 
     </label>
     </div>
-
-
-
-
   <div class="content">
     <div class="card-grid">
 
         <div class="card">             
-            <p class="card-title"><i class="fa-solid fa-lightbulb"></i> ONBOARD LED</p>
-            <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="onboard_led">
-                <span class="slider toggle"></span>
-            </label>
-            <p class ="state">State: <span id="2s"></span></p>
-        </div>
-        
-        <div class="card">             
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 1</p>
             <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="16">
+                <input type="checkbox" onchange="updatePlugs(this)" id="plug1">
                 <span class="slider toggle"></span>
             </label>
-            <p class ="state">State: <span id="16s"></span></p>
+            <p class ="state">State: <span id="plugStatus1"></span></p>
         </div>
         <div class="card">
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 2</p>
             <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="17">
+                <input type="checkbox" onchange="updatePlugs(this)" id="plug2">
                 <span class="slider toggle"></span>
             </label>
-            <p class ="state">State: <span id="17s"></span></p>
+            <p class ="state">State: <span id="plugStatus2"></span></p>
         </div>
         <div class="card">
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 3</p>
             <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="18">
+                <input type="checkbox" onchange="updatePlugs(this)" id="plug3">
                 <span class="slider toggle"></span>
             </label>
-            <p class ="state">State: <span id="18s"></span></p>
+            <p class ="state">State: <span id="plugStatus3"></span></p>
         </div>
         <div class="card">
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 4</p>
             <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="19">
+                <input type="checkbox" onchange="updatePlugs(this)" id="plug4">
                 <span class="slider toggle"></span>
             </label>
-            <p class="state">State: <span id="19s"></span></p>
+            <p class="state">State: <span id="plugStatus4"></span></p>
         </div>
         <div class="card">
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 5</p>
             <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="23">
+                <input type="checkbox" onchange="updatePlugs(this)" id="plug5">
                 <span class="slider toggle"></span>
             </label>
-            <p class ="state">State: <span id="23s"></span></p>
+            <p class ="state">State: <span id="plugStatus5"></span></p>
         </div>
         <div class="card">
             <p class="card-title"><i class="fa-solid fa-plug"></i> OUTLET 6</p>
             <label class="switch toggle">
-                <input type="checkbox" onchange="toggleCheckbox(this)" id="25">
+                <input type="checkbox" onchange="updatePlugs(this)" id="plug6">
                 <span class="slider toggle"></span>
             </label>
-            <p class="state">State: <span id="25s"></span></p>
+            <p class="state">State: <span id="plugStatus6"></span></p>
         </div>
 
 
@@ -121,14 +108,7 @@
             </p>
             <p class="state">Speed: <span id="sliderValue5"></span> &percnt;</p>
         </div>
-        <div class="card">
-            <p class="card-title">12V DC #6</p>
-            
-            <p class="switch slide">
-                <input type="range" onchange="updateSliderPWM(this)" id="slider6" min="0" max="100" step="1" value ="0" class="slider slide">
-            </p>
-            <p class="state">Speed: <span id="sliderValue6"></span> &percnt;</p>
-        </div>
+        
     </div>
 </div>
 <script src="/script.js"></script>

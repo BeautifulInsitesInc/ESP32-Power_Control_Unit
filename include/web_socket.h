@@ -7,61 +7,29 @@
 AsyncWebSocket ws("/ws");
 AsyncWebSocketClient* wsClient;
 
-//sliders starting value
-String message = "";
-String sliderValue1 = "0";
-String sliderValue2 = "0";
-String sliderValue3 = "0";
-String sliderValue4 = "0";
-String sliderValue5 = "0";
-String sliderValue6 = "0";
-
-int dutyCycle1;
-int dutyCycle2;
-int dutyCycle3;
-int dutyCycle4;
-int dutyCycle5;
-int dutyCycle6;
-
-// setting PWM properties
-const int freq = 5000;
-const int ledChannel1 = 0;
-const int ledChannel2 = 1;
-const int ledChannel3 = 2;
-const int ledChannel4 = 3;
-const int ledChannel5 = 4;
-const int ledChannel6 = 5;
-
-const int resolution = 8;
-
 //Json Variable to Hold Slider Values
 JSONVar sliderValues;
-  
+//JSONVar toggleValues;
+
 //Get Slider Values
 String getSliderValues(){
+  //AC plugs
+  sliderValues["plugStatus1"] = String(plugStatus1);
+  sliderValues["plugStatus2"] = String(plugStatus2);
+  sliderValues["plugStatus3"] = String(plugStatus3);
+  sliderValues["plugStatus4"] = String(plugStatus4);
+  sliderValues["plugStatus5"] = String(plugStatus5);
+  sliderValues["plugstatus6"] = String(plugStatus6);
+
+  //DC sliders
   sliderValues["sliderValue1"] = String(sliderValue1);
   sliderValues["sliderValue2"] = String(sliderValue2);
   sliderValues["sliderValue3"] = String(sliderValue3);
   sliderValues["sliderValue4"] = String(sliderValue4);
   sliderValues["sliderValue5"] = String(sliderValue5);
-  sliderValues["sliderValue6"] = String(sliderValue6);
 
   String jsonString = JSON.stringify(sliderValues);
   return jsonString;
-}
-/* The processor() function is responsible for searching for placeholders on the HTML text and
-replace them with whatever we want before sending the web page to the browser. 
-*/
-String processor(const String& var){
-  Serial.println(var);
-  if(var == "STATE"){
-    if (led_on){
-      return "ON";
-    }
-    else{
-      return "OFF";
-    }
-  }
 }
 
 void notifyClients(String sliderValues) {
@@ -70,15 +38,14 @@ void notifyClients(String sliderValues) {
 
 // callback function that will run whenever we receive new data from the clients via WebSocket protocol.
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
-  tout("handlign a socket message");
-  outln("Runnig handleWebSocketMessage :");
+  tout("handlign a socket message");  outln("Runnig handleWebSocketMessage :");
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
-  out("len : "); outln(len); 
   if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
     data[len] = 0;
     message = (char*)data;
     
     // Button on/off:
+    /*
     if (strcmp((char*)data, "onboard_led") == 0) {
       outln("handle websocket data being passed for : ");
       toutln("handelWebSocketMessage for Button on/off is being run");
@@ -86,8 +53,40 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       ws.textAll("Sending led_on value : ");ws.textAll(String(led_on));
       //notifyClients();
     }
+    */
+   
+    if (message.indexOf("1p") >= 0) {
+      plugStatus1 = message.substring(2);
+      tout("Recieved on server : plugStatus1 : "); toutln(plugStatus1); 
+      notifyClients(getSliderValues());
+    }
 
+    if (message.indexOf("2p") >= 0) {
+      plugStatus2 = message.substring(2);
+      tout("Recieved on server : plugStatus1 : "); toutln(plugStatus1); 
+      //tout("getSliderValues : "); toutln(getSliderValues());
+      notifyClients(getSliderValues());
+    }
+
+    if (message.indexOf("3p") >= 0) {
+      plugStatus3 = message.substring(2);
+      notifyClients(getSliderValues());
+    }
+    if (message.indexOf("4p") >= 0) {
+      plugStatus4 = message.substring(2);
+      notifyClients(getSliderValues());
+    }
+    if (message.indexOf("5p") >= 0) {
+      plugStatus5 = message.substring(2);
+      notifyClients(getSliderValues());
+    }
+    if (message.indexOf("6p") >= 0) {
+      plugStatus6 = message.substring(2);
+      notifyClients(getSliderValues());
+    }
     //Sliders :
+    tout("Running handle message, message is : "); toutln(message);
+
     if (message.indexOf("1s") >= 0) {
       sliderValue1 = message.substring(2);
       dutyCycle1 = map(sliderValue1.toInt(), 0, 100, 0, 255);
@@ -126,24 +125,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       tout("getSliderValues : "); toutln(getSliderValues());
       notifyClients(getSliderValues());
     }
-    if (message.indexOf("6s") >= 0) {
-      sliderValue6 = message.substring(2);
-      dutyCycle6 = map(sliderValue6.toInt(), 0, 100, 0, 255);
-      tout("dutyCycle6 : "); toutln(dutyCycle1);
-      tout("getSliderValues : "); toutln(getSliderValues());
-      notifyClients(getSliderValues());
-    }
-
+    
     if (strcmp((char*)data, "getValues") == 0) {
       toutln("handleWebSocketMessage: getValues is being run");
       notifyClients(getSliderValues());
     }
-
-
-
   }
-
-  
 }
 
 /*The type argument represents the event that occurs. It can take the following values:
@@ -289,6 +276,23 @@ void webStuffLoop(){
 
 }
 
+*/
+/* The processor() function is responsible for searching for placeholders on the HTML text and
+replace them with whatever we want before sending the web page to the browser. 
+*/
+
+/*
+String processor(const String& var){
+  Serial.println(var);
+  if(var == "STATE"){
+    if (led_on){
+      return "ON";
+    }
+    else{
+      return "OFF";
+    }
+  }
+}
 */
 
 

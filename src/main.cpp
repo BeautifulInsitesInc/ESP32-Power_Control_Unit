@@ -38,7 +38,7 @@ void setup()
   dhtSetup();
 
 }
-
+String previousState = "off";
 void loop()
 {
   wifiManagerLoop();
@@ -49,6 +49,7 @@ void loop()
   
 /******** WEB SOCKET LOOP ******/
  //;ws.loop(); server.handleClient();
+ /*
   //-----------------------------------------------
   if(led_on == false) digitalWrite(LED_BUILTIN, LOW);
   else digitalWrite(LED_BUILTIN, HIGH);
@@ -60,6 +61,35 @@ void loop()
   //websocket.broadcastTXT(JSONtxt);
   //AsyncWebSocket.broadcastTXT(JSONtxt);
   //websocket.send(JSONtxt);
+*/
+
+  
+
+  if (plugStatus1 == "on") {
+    digitalWrite(AC1, LOW);
+    if (previousState != plugStatus1){
+      tout("Turning plug 1 on!");
+      previousState = plugStatus1;
+    }
+  }  
+  else {
+    digitalWrite(AC1, HIGH);
+    if (previousState != plugStatus1){
+      tout("Turning plug 1 Off!!!");
+      previousState = plugStatus1;
+    } 
+  }
+
+  if (plugStatus2 == "on")  digitalWrite(AC2, LOW);
+  else digitalWrite(AC1, HIGH);
+  if (plugStatus3 == "on")  digitalWrite(AC3, LOW);
+  else digitalWrite(AC1, HIGH);
+  if (plugStatus4 == "on")  digitalWrite(AC4, LOW);
+  else digitalWrite(AC1, HIGH);
+  if (plugStatus5 == "on")  digitalWrite(AC5, LOW);
+  else digitalWrite(AC1, HIGH);
+  if (plugStatus6 == "on")  digitalWrite(AC6, LOW);
+  else digitalWrite(AC1, HIGH);
 
   //Slider update
   ledcWrite(ledChannel1, dutyCycle1);
@@ -67,8 +97,6 @@ void loop()
   ledcWrite(ledChannel3, dutyCycle3);
   ledcWrite(ledChannel4, dutyCycle3);
   ledcWrite(ledChannel5, dutyCycle3);
-  ledcWrite(ledChannel6, dutyCycle3);
-
 
 
 
