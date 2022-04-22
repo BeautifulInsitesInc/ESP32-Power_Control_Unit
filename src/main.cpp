@@ -39,75 +39,34 @@ void setup()
 
 }
 String previousState = "off";
+unsigned long testtimer = millis();
 void loop()
 {
   wifiManagerLoop();
   AsyncElegantOTA.loop();
   telnetLoop();
+  ws.cleanupClients();
   
-  //getDHTReadings();
+  getDHTReadings();
   
-/******** WEB SOCKET LOOP ******/
- //;ws.loop(); server.handleClient();
- /*
-  //-----------------------------------------------
-  if(led_on == false) digitalWrite(LED_BUILTIN, LOW);
-  else digitalWrite(LED_BUILTIN, HIGH);
-  //-----------------------------------------------
-  String led_status = "OFF";
-  if(led_on == true) led_status = "ON";
-  JSONtxt = "{\"LEDonoff\":\""+led_status+"\"}";
-  // need to send it to the client now
-  //websocket.broadcastTXT(JSONtxt);
-  //AsyncWebSocket.broadcastTXT(JSONtxt);
-  //websocket.send(JSONtxt);
-*/
-
-  
-
-  if (plugStatus1 == "on") {
-    digitalWrite(AC1, LOW);
-    if (previousState != plugStatus1){
-      tout("Turning plug 1 on!");
-      previousState = plugStatus1;
-    }
-  }  
-  else {
-    digitalWrite(AC1, HIGH);
-    if (previousState != plugStatus1){
-      tout("Turning plug 1 Off!!!");
-      previousState = plugStatus1;
-    } 
-  }
-
+  if (plugStatus1 == "on") digitalWrite(AC1, LOW);
+  else digitalWrite(AC1, HIGH);
   if (plugStatus2 == "on")  digitalWrite(AC2, LOW);
-  else digitalWrite(AC1, HIGH);
+  else digitalWrite(AC2, HIGH);
   if (plugStatus3 == "on")  digitalWrite(AC3, LOW);
-  else digitalWrite(AC1, HIGH);
+  else digitalWrite(AC3, HIGH);
   if (plugStatus4 == "on")  digitalWrite(AC4, LOW);
-  else digitalWrite(AC1, HIGH);
-  if (plugStatus5 == "on")  digitalWrite(AC5, LOW);
-  else digitalWrite(AC1, HIGH);
-  if (plugStatus6 == "on")  digitalWrite(AC6, LOW);
-  else digitalWrite(AC1, HIGH);
+  else digitalWrite(AC4, HIGH);
 
   //Slider update
   ledcWrite(ledChannel1, dutyCycle1);
   ledcWrite(ledChannel2, dutyCycle2);
   ledcWrite(ledChannel3, dutyCycle3);
-  ledcWrite(ledChannel4, dutyCycle3);
-  ledcWrite(ledChannel5, dutyCycle3);
+  ledcWrite(ledChannel4, dutyCycle4);
 
+}
 
-
-  if(magic_word != previous_magic_word){
-    magicWord();
-    previous_magic_word = magic_word;
-  } 
-
-
-
-  /*Note that we all call the cleanupClients() method. Here’s why 
+/*Note that we all call the cleanupClients() method. Here’s why 
   (explanation from the ESPAsyncWebServer library GitHub page):
   Browsers sometimes do not correctly close the WebSocket connection, 
   even when the close() function is called in JavaScript. 
@@ -117,6 +76,3 @@ void loop()
   This can be called every cycle, however, if you wish to use less power, then calling as infrequently
   as once per second is sufficient.
   */
-  ws.cleanupClients();
-  
-}

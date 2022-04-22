@@ -18,15 +18,12 @@ String getSliderValues(){
   sliderValues["plugStatus2"] = String(plugStatus2);
   sliderValues["plugStatus3"] = String(plugStatus3);
   sliderValues["plugStatus4"] = String(plugStatus4);
-  sliderValues["plugStatus5"] = String(plugStatus5);
-  sliderValues["plugstatus6"] = String(plugStatus6);
 
   //DC sliders
   sliderValues["sliderValue1"] = String(sliderValue1);
   sliderValues["sliderValue2"] = String(sliderValue2);
   sliderValues["sliderValue3"] = String(sliderValue3);
   sliderValues["sliderValue4"] = String(sliderValue4);
-  sliderValues["sliderValue5"] = String(sliderValue5);
 
   String jsonString = JSON.stringify(sliderValues);
   return jsonString;
@@ -76,14 +73,6 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       plugStatus4 = message.substring(2);
       notifyClients(getSliderValues());
     }
-    if (message.indexOf("5p") >= 0) {
-      plugStatus5 = message.substring(2);
-      notifyClients(getSliderValues());
-    }
-    if (message.indexOf("6p") >= 0) {
-      plugStatus6 = message.substring(2);
-      notifyClients(getSliderValues());
-    }
     //Sliders :
     tout("Running handle message, message is : "); toutln(message);
 
@@ -118,14 +107,6 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       notifyClients(getSliderValues());
     }
 
-    if (message.indexOf("5s") >= 0) {
-      sliderValue5 = message.substring(2);
-      dutyCycle5 = map(sliderValue5.toInt(), 0, 100, 0, 255);
-      tout("dutyCycle5 : "); toutln(dutyCycle1);
-      tout("getSliderValues : "); toutln(getSliderValues());
-      notifyClients(getSliderValues());
-    }
-    
     if (strcmp((char*)data, "getValues") == 0) {
       toutln("handleWebSocketMessage: getValues is being run");
       notifyClients(getSliderValues());
