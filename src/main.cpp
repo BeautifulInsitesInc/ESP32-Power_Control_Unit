@@ -1,5 +1,10 @@
 #include "main.h"
 
+
+//JSONVar settingValues;
+
+
+
 void setup()
 {
   Serial.begin(115200);
@@ -37,7 +42,10 @@ void setup()
 
   dhtSetup();
 
+  loadPreferences();
+
 }
+
 String previousState = "off";
 unsigned long testtimer = millis();
 void loop()
@@ -48,6 +56,7 @@ void loop()
   ws.cleanupClients();
   
   getDHTReadings();
+
   
   if (plugStatus1 == "on") digitalWrite(AC1, LOW);
   else digitalWrite(AC1, HIGH);
@@ -63,6 +72,11 @@ void loop()
   ledcWrite(ledChannel2, dutyCycle2);
   ledcWrite(ledChannel3, dutyCycle3);
   ledcWrite(ledChannel4, dutyCycle4);
+
+  if(testtimer>= millis()+10000){
+    testtimer = millis();
+    notifyClients(getSliderValues());
+  }
 
 }
 

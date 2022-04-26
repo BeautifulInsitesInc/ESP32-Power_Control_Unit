@@ -29,7 +29,17 @@ function onClose(event) {
     console.log('Connection closed');
     setTimeout(initWebSocket, 2000);
 } 
+// Save Button
+function saveSettings(){
+    console.log("Save Button was pressed");
+    websocket.send("saveSettings");
+}
 
+// Rest Button
+function loadSettings(){
+    console.log("Load Settings Button was pressed");
+    websocket.send("loadSettings");
+}
 // PLUG TOGGLES
 function updatePlugs(element) {  
     var plugNumber = element.id.charAt(element.id.length-1);
@@ -52,14 +62,12 @@ function updatePlugs(element) {
 function updateSliderPWM(element) {  
     var sliderNumber = element.id.charAt(element.id.length-1);
     var sliderValue = document.getElementById(element.id).value;
-    /*console.log("slideNumber :" + sliderNumber + "     sliderValue :" + sliderValue);*/
     document.getElementById("sliderValue"+sliderNumber).innerHTML = sliderValue;
     websocket.send(sliderNumber+"s"+sliderValue.toString());
-    /*console.log("Just sent this message to server: "+ sliderNumber+"s"+sliderValue.toString()); */
 }
 
 function onMessage(event) {
-    console.log("Recieved message to browers : ");
+    console.log("Recieved message : ");
     console.log(event.data);
     var myObj = JSON.parse(event.data);
     var keys = Object.keys(myObj)
@@ -87,13 +95,12 @@ function onMessage(event) {
             document.getElementById(key).innerHTML = keyValue;
             document.getElementById("slider"+ elementNumber.toString()).value = myObj[key];
         }
-       
+
+        if (key == "airTempC"){
+            document.getElementById(key).innerHTML = keyValue;
+        }
+
+        if (key == "airTempF")document.getElementById(key).innerHTML = keyValue;
+        if (key == "humidity")document.getElementById(key).innerHTML = keyValue;
     }
-    
 }
-
-
-
-
-
-

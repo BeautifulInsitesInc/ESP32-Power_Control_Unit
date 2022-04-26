@@ -29,7 +29,7 @@ body {
   padding: 30px;
 }
 .card-grid {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   display: grid;
   grid-gap: 2rem;
@@ -84,10 +84,11 @@ body {
 
 
 .switch.toggle {
-  position: relative; 
-  display: inline-block; 
+  position:relative;
+  display: inline-block;
   width: 120px; 
-  height: 68px
+  height: 68px;
+  align-self: center;
 } 
 .switch.toggle input {
     display: none

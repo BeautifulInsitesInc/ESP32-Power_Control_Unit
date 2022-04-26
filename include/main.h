@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <Arduino.h>
+//#include <ArduinoJson.h>
 
 // --- DEBUGGING ---
 #define DEBUG // Comment out to remove all serial prints
@@ -76,7 +77,7 @@ const int resolution = 8;
 
 // ************* GLOBAL VARIABLES ***********************
 int dht_timer_start = millis();
-int dht_timer_period = 5; //time in seconds between readings
+int dht_timer_period = 30; //time in seconds between readings
 float dht_tempC = 0;
 float dht_tempF = 0;
 float dht_humidity = 0;
@@ -87,8 +88,10 @@ float dht_humidity = 0;
 // ******* INCLUDE FILES *********************
 #include "display.h"
 #include "wifi_manager.h"
+#include "save_settings.h"
 #include "web_socket.h"
 #include "sensor_temp.h"
+
 
 void pinSetup(){
   // Initialize AC plugs and set to HIGH - (off)

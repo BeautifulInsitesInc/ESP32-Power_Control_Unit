@@ -34,6 +34,10 @@ void getDHTReadings(){
     tout("DHT Temp = C:"); tout(dht_tempC); tout("       F: "); tout(dht_tempF); tout("       Humidity = "); tout(dht_humidity); toutln("%");
     // --- end debugging ---
     dht_timer_start = millis();
+
+    // Send readings to browser
+    notifyClients(getSensorValues());
+
   }
 }
  
