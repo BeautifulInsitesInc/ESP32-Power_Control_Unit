@@ -25,10 +25,16 @@ String getSensorValues(){
 //Get Slider Values
 String getStateValues(){
   //AC plugs
-  stateValues["plugStatus1"] = String(plugStatus1);
-  stateValues["plugStatus2"] = String(plugStatus2);
-  stateValues["plugStatus3"] = String(plugStatus3);
-  stateValues["plugStatus4"] = String(plugStatus4);
+  stateValues["elementStatus1"] = String(elementStatus1);
+  stateValues["elementStatus2"] = String(elementStatus2);
+  stateValues["elementStatus3"] = String(elementStatus3);
+  stateValues["elementStatus4"] = String(elementStatus4);
+  stateValues["elementStatus5"] = String(elementStatus5);
+  stateValues["elementStatus6"] = String(elementStatus6);
+  stateValues["elementStatus7"] = String(elementStatus7);
+  stateValues["elementStatus8"] = String(elementStatus8);
+
+
 
   //DC sliders
   stateValues["sliderValue1"] = String(sliderValue1);
@@ -37,10 +43,14 @@ String getStateValues(){
   stateValues["sliderValue4"] = String(sliderValue4);
 
   //Trigger Values
-  stateValues["triggerPlug1"] = String(triggerPlug1);
-  stateValues["triggerPlug2"] = String(triggerPlug2);
-  stateValues["triggerPlug3"] = String(triggerPlug3);
-  stateValues["triggerPlug4"] = String(triggerPlug4);
+  stateValues["triggerStatus1"] = String(triggerStatus1);
+  stateValues["triggerStatus2"] = String(triggerStatus2);
+  stateValues["triggerStatus3"] = String(triggerStatus3);
+  stateValues["triggerStatus4"] = String(triggerStatus4);
+  stateValues["triggerStatus5"] = String(triggerStatus5);
+  stateValues["triggerStatus6"] = String(triggerStatus6);
+  stateValues["triggerStatus7"] = String(triggerStatus7);
+  stateValues["triggerStatus8"] = String(triggerStatus8);
 
   String jsonString = JSON.stringify(stateValues);
   toutln("Just ran GetstateValues :"); toutln(stateValues);
@@ -60,7 +70,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     message = (char*)data;
     tout("websocket.h recieved message : "); toutln(message);
 
-    // *****  TURN ELEMENTS ON OR OFF *******
+    // ============== TURN ELEMENTS ON OR OFF ==============
     if (message.indexOf("S") >=0) {// If the message is status change (on/off)
       String elementNumber = message.substring(1,2);
       String elementStatus = message.substring(2);
@@ -68,18 +78,18 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
 
       switch (elementNumber.toInt()){
         // AC Plugs
-        case 1: if (triggerPlug1 == "manual0") plugStatus1 = elementStatus; break;
-        case 2: if (triggerPlug2 == "manual0") plugStatus2 = elementStatus; break;
-        case 3: if (triggerPlug3 == "manual0") plugStatus3 = elementStatus; break;
-        case 4: if (triggerPlug4 == "manual0") plugStatus4 = elementStatus; break;
+        case 1: if (triggerStatus1 == "manual0") elementStatus1 = elementStatus; break;
+        case 2: if (triggerStatus2 == "manual0") elementStatus2 = elementStatus; break;
+        case 3: if (triggerStatus3 == "manual0") elementStatus3 = elementStatus; break;
+        case 4: if (triggerStatus4 == "manual0") elementStatus4 = elementStatus; break;
         // DC Plugs
-        case 5: if (triggerAC1 == "manual0") sliderStatus1 = elementStatus; break;
-        case 6: if (triggerAC2 == "manual0") sliderStatus2 = elementStatus; break;
-        case 7: if (triggerAC3 == "manual0") sliderStatus3 = elementStatus; break;
-        case 8: if (triggerAC4 == "manual0") sliderStatus4 = elementStatus; break;
+        case 5: if (triggerStatus5 == "manual0") triggerStatus5 = elementStatus; break;
+        case 6: if (triggerStatus6 == "manual0") triggerStatus6 = elementStatus; break;
+        case 7: if (triggerStatus7 == "manual0") triggerStatus7 = elementStatus; break;
+        case 8: if (triggerStatus8 == "manual0") triggerStatus8 = elementStatus; break;
       }
     }
-    //Sliders :
+    // ============  CHANGE DC SLIDER VALUES ================
 
     if (message.indexOf("1s") >= 0) {
       sliderValue1 = message.substring(2);
@@ -132,12 +142,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
           switch (triggerSelectionIndex.toInt()){
               case 0: //manual
                 toutln("plug 1 index 0 chosen");
-                triggerPlug1 = "manual0";
+                triggerStatus1 = "manual0";
                 break;
               case 1: // always on
                 toutln("plug 1 index 1 has been chosen");
-                plugStatus1 = "on";
-                triggerPlug1 = "alwaysON1";
+                elementStatus1 = "on";
+                triggerStatus1 = "alwaysON1";
                 break;
           }
 
@@ -146,12 +156,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
           switch (triggerSelectionIndex.toInt()){
               case 0: //manual
                 toutln("plug 2 index 0 chosen");
-                triggerPlug2 = "manual0";
+                triggerStatus2 = "manual0";
                 break;
               case 1:
                 toutln("plug 2 index 1 has been chosen");
-                plugStatus2 = "on";
-                triggerPlug2 = "alwaysON1";
+                elementStatus2 = "on";
+                triggerStatus2 = "alwaysON1";
                 break;
           }
           break;
@@ -160,12 +170,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
           switch (triggerSelectionIndex.toInt()){
             case 0: //manual
               toutln("plug 3 index 0 chosen");
-              triggerPlug3 = "manual0";
+              triggerStatus3 = "manual0";
               break;
             case 1:
               toutln("plug 3 index 1 has been chosen");
-              plugStatus3 = "on";
-              triggerPlug3 = "alwaysON1";
+              elementStatus3 = "on";
+              triggerStatus3 = "alwaysON1";
               break;
           }
           break;
@@ -174,12 +184,12 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
           switch (triggerSelectionIndex.toInt()){
             case 0: //manual
               toutln("plug 4 index 0 chosen");
-              triggerPlug4 = "manual0";
+              triggerStatus4 = "manual0";
               break;
             case 1:
               toutln("plug 4 index 1 has been chosen");
-              plugStatus4 = "on";
-              triggerPlug4 = "alwaysON1";
+              elementStatus4 = "on";
+              triggerStatus4 = "alwaysON1";
               break;
           }
           break;

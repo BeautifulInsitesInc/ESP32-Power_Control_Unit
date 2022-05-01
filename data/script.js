@@ -4,13 +4,9 @@ var websocket;
 // INITIALIZTION
 window.addEventListener('load', onLoad);
 
-function onLoad(event) {
-    initWebSocket();
-}
+function onLoad(event) {initWebSocket();}
 
-function getValues(){
-    websocket.send("getValues");
-}
+function getValues(){websocket.send("getValues");}
 
 function initWebSocket() {
     console.log('Trying to open a WebSocket connection...');
@@ -40,20 +36,21 @@ function loadSettings(){
     console.log("Load Settings Button was pressed");
     websocket.send("loadSettings");
 }
+
 // ON/OFF STATUS CHANGE
 function updateStatus(element) {  
     var elementNumber = element.id.charAt(element.id.length-1);
     if (element.checked){
-        document.getElementById("plugStatus"+elementNumber).innerHTML = "ON!";
-        plugStatus = "on";
+        document.getElementById("elementStatus"+elementNumber).innerHTML = "ON!";
+        elementStatus = "on";
     }
     else {
-        document.getElementById("plugStatus"+elementNumber).innerHTML = "OFF"; 
-        plugStatus = "off";
+        document.getElementById("elementStatus"+elementNumber).innerHTML = "OFF"; 
+        elementStatus = "off";
     }
 
     // Send S1on = "Status", Element 1, on/off
-    var plugDeviceStatus = "S" + elementNumber + plugStatus;
+    var plugDeviceStatus = "S" + elementNumber + elementStatus;
 
     websocket.send(plugDeviceStatus);
 }
@@ -103,7 +100,7 @@ function onMessage(event) {
         console.log("Counter:" + i + " Item:" + itemType + " Element:"+elementNumber + " key:"+ key + " Value:" + keyValue+ " triggerValueIndex = "+triggerValueIndex);
         if (itemType == "p"){
             var switchID = "plug" + elementNumber;
-            var switchStateID = "plugStatus" + elementNumber;
+            var switchStateID = "elementStatus" + elementNumber;
             if (keyValue == "on"){
                 document.getElementById(switchID).checked = true;
                 document.getElementById(switchStateID).innerHTML = "ON";
