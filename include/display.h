@@ -37,8 +37,6 @@
 #include <Fonts/FreeMonoBold9pt7b.h>
 #define FONT2B &FreeMonoBold9pt7b
 
-
-
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -69,7 +67,6 @@ void magicWord(){
   Display.setCursor(25,LINE2);
   Display.println(magic_word);
   Display.display();
-
 }
 
 void splashScreen() {

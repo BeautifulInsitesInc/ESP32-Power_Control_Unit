@@ -1149,7 +1149,7 @@ void wifiManagerLoop(){
     drd->loop();
 
   check_status();
-  AsyncElegantOTA.loop();
+  //AsyncElegantOTA.loop();
 }
 
 void telnetLoop(){

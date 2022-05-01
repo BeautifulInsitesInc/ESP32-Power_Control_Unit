@@ -40,22 +40,36 @@ function loadSettings(){
     console.log("Load Settings Button was pressed");
     websocket.send("loadSettings");
 }
-// PLUG TOGGLES
-function updatePlugs(element) {  
-    var plugNumber = element.id.charAt(element.id.length-1);
-    /*console.log("plugNumber :"+plugNumber+ "     plugStatus :" + plugStatus);*/
-    /*console.log("Updating PLuging, sending this : " + plugDeviceStatus+ " plugstatus: "+plugStatus); */
+// ON/OFF STATUS CHANGE
+function updateStatus(element) {  
+    var elementNumber = element.id.charAt(element.id.length-1);
     if (element.checked){
-        document.getElementById("plugStatus"+plugNumber).innerHTML = "ON!";
+        document.getElementById("plugStatus"+elementNumber).innerHTML = "ON!";
         plugStatus = "on";
     }
     else {
-        document.getElementById("plugStatus"+plugNumber).innerHTML = "OFF"; 
+        document.getElementById("plugStatus"+elementNumber).innerHTML = "OFF"; 
         plugStatus = "off";
     }
-    //var plugStatus = document.getElementById(element.id).value;
-    var plugDeviceStatus = plugNumber + "p" + plugStatus;
+
+    // Send S1on = "Status", Element 1, on/off
+    var plugDeviceStatus = "S" + elementNumber + plugStatus;
+
     websocket.send(plugDeviceStatus);
+}
+
+
+
+
+function triggerChange(element){
+    var plugNumber = element.id.charAt(element.id.length-1);
+    var triggerSelection = element.value;
+    var triggerSelectionIndex = element.value.charAt(element.value.length-1);
+    console.log("recieved trigger from plugNumber: "+ plugNumber +" triggerSelection : " + triggerSelection+" index number: "+triggerSelectionIndex);
+    var triggerCode = "T"+plugNumber+triggerSelectionIndex;
+    console.log("Sending message : "+triggerCode);
+    websocket.send(triggerCode);
+    
 }
 
 // DC SLIDERS
@@ -66,20 +80,28 @@ function updateSliderPWM(element) {
     websocket.send(sliderNumber+"s"+sliderValue.toString());
 }
 
+// SETUP TIME CYCLE
+function setCycleTime(element){
+    var elementNumber = element.id;
+    console.log("elementNumber :"+elementNumber);
+
+}
+
 function onMessage(event) {
     console.log("Recieved message : ");
     console.log(event.data);
     var myObj = JSON.parse(event.data);
     var keys = Object.keys(myObj)
+   
 
     for (var i = 0; i < keys.length; i++){
         var key = keys[i];
-        var jackType = key.charAt(0);
+        var itemType = key.charAt(0);
         var elementNumber = key.charAt(key.length-1);
         var keyValue = myObj[key];
-        //console.log("Counter:" + i + " Jack:" + jackType + " Element:"+elementNumber + " key:"+ key + " Value:" + keyValue);
-        
-        if (jackType == "p"){
+        var triggerValueIndex = keyValue.charAt(keyValue.length-1);
+        console.log("Counter:" + i + " Item:" + itemType + " Element:"+elementNumber + " key:"+ key + " Value:" + keyValue+ " triggerValueIndex = "+triggerValueIndex);
+        if (itemType == "p"){
             var switchID = "plug" + elementNumber;
             var switchStateID = "plugStatus" + elementNumber;
             if (keyValue == "on"){
@@ -91,16 +113,40 @@ function onMessage(event) {
             } 
         }
        
-        if (jackType == "s"){
+        if (itemType == "s"){
             document.getElementById(key).innerHTML = keyValue;
             document.getElementById("slider"+ elementNumber.toString()).value = myObj[key];
         }
 
-        if (key == "airTempC"){
-            document.getElementById(key).innerHTML = keyValue;
-        }
-
+        if (key == "airTempC") document.getElementById(key).innerHTML = keyValue;
         if (key == "airTempF")document.getElementById(key).innerHTML = keyValue;
         if (key == "humidity")document.getElementById(key).innerHTML = keyValue;
+
+        //if (key == "triggerPlug1")document.getElementById(key).innerHTML = keyValue;
+        if (itemType == "t"){
+            document.getElementById(key).selectedIndex = triggerValueIndex;
+            console.log("just changed selected to idex : "+triggerValueIndex+" for key :"+key+" with value:"+keyValue);
+            switch(triggerValueIndex) {
+                case '0': //manual0
+                    document.getElementById("plugTimeCycle"+elementNumber).style.display="none";
+                    break;
+                case '1': //alwasyON1
+                    document.getElementById("plugTimeCycle"+elementNumber).style.display="block";
+                    break;
+                case '2': //timeClock2
+                    document.getElementById("plugTimeCycle"+elementNumber).style.display="none";
+                    break;
+                case '3': //timeCycle3
+                    document.getElementById("plugTimeCycle"+elementNumber).style.display="block";
+                    break;
+                case '4': //sensor4
+                    document.getElementById("plugTimeCycle"+elementNumber).style.display="none";
+                    break;
+                case '5': //linked5
+                    document.getElementById("plugTimeCycle"+elementNumber).style.display="none";
+                    break;
+            }
+
+        }
     }
 }

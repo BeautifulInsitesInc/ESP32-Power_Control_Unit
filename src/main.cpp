@@ -43,6 +43,7 @@ void setup()
   dhtSetup();
 
   loadPreferences();
+  getDHTReadings();
 
 }
 
@@ -51,20 +52,20 @@ unsigned long testtimer = millis();
 void loop()
 {
   wifiManagerLoop();
-  AsyncElegantOTA.loop();
+  //AsyncElegantOTA.loop();
   telnetLoop();
   ws.cleanupClients();
   
   getDHTReadings();
 
   
-  if (plugStatus1 == "on") digitalWrite(AC1, LOW);
+  if (plugStatus1 == "on" || triggerPlug1 == "alwasyON1") digitalWrite(AC1, LOW);
   else digitalWrite(AC1, HIGH);
-  if (plugStatus2 == "on")  digitalWrite(AC2, LOW);
+  if (plugStatus2 == "on" || triggerPlug2 == "alwasyON1")  digitalWrite(AC2, LOW);
   else digitalWrite(AC2, HIGH);
-  if (plugStatus3 == "on")  digitalWrite(AC3, LOW);
+  if (plugStatus3 == "on" || triggerPlug3 == "alwasyON1")  digitalWrite(AC3, LOW);
   else digitalWrite(AC3, HIGH);
-  if (plugStatus4 == "on")  digitalWrite(AC4, LOW);
+  if (plugStatus4 == "on" || triggerPlug4 == "alwasyON1")  digitalWrite(AC4, LOW);
   else digitalWrite(AC4, HIGH);
 
   //Slider update
@@ -75,7 +76,7 @@ void loop()
 
   if(testtimer>= millis()+10000){
     testtimer = millis();
-    notifyClients(getSliderValues());
+    notifyClients(getStateValues());
   }
 
 }

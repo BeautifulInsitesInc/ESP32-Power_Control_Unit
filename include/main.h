@@ -47,19 +47,33 @@ const int DC2 = 27;
 const int DC3 = 32;
 const int DC4 = 23;//23 25
 
-
+String message = "";
 //Toggle switches starting values
 String plugStatus1 = "off";
 String plugStatus2 = "off";
 String plugStatus3 = "off";
 String plugStatus4 = "off";
 
+String triggerPlug1= "manual0";
+String triggerPlug2= "manual0pp";
+String triggerPlug3= "manual0";
+String triggerPlug4= "manual0";
+
 //sliders starting value
-String message = "";
+String sliderStatus1 = "off";
+String sliderStatus2 = "off";
+String sliderStatus3 = "off";
+String sliderStatus4 = "off";
+
 String sliderValue1 = "0";
 String sliderValue2 = "0";
 String sliderValue3 = "0";
 String sliderValue4 = "0";
+
+String triggerAC1= "manual0";
+String triggerAC2= "manual0gg";
+String triggerAC3= "manual0";
+String triggerAC4= "manual0";
 
 int dutyCycle1;
 int dutyCycle2;

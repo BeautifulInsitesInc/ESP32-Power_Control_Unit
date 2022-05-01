@@ -18,6 +18,16 @@ void savePreferences(){
     preferences.putString("sliderValue2", sliderValue2);
     preferences.putString("sliderValue3", sliderValue3);
     preferences.putString("sliderValue4", sliderValue4);
+    //Trigger Values
+    preferences.putString("triggerPlug1", triggerPlug1);
+    preferences.putString("triggerPlug2", triggerPlug2);
+    preferences.putString("triggerPlug3", triggerPlug3);
+    preferences.putString("triggerPlug4", triggerPlug4);
+    preferences.putString("triggerAC1", triggerAC1);
+    preferences.putString("triggerAC2", triggerAC2);
+    preferences.putString("triggerAC3", triggerAC3);
+    preferences.putString("triggerAC4", triggerAC4);
+    
 
     preferences.end();
     toutln("Preferences Saved");
@@ -40,6 +50,16 @@ void loadPreferences(){
     sliderValue2 = preferences.getString("sliderValue2","0");
     sliderValue3 = preferences.getString("sliderValue3","0");
     sliderValue4 = preferences.getString("sliderValue4","0");
+    //Trigger Values
+    triggerPlug1 = preferences.getString("triggerPlug1", "manual");
+    triggerPlug2 = preferences.getString("triggerPlug2", "manual");
+    triggerPlug3 = preferences.getString("triggerPlug3", "manual");
+    triggerPlug4 = preferences.getString("triggerPlug4", "manual");
+
+    triggerAC1 = preferences.getString("triggerAC1", "manual");
+    triggerAC2 = preferences.getString("triggerAC2", "manual");
+    triggerAC3 = preferences.getString("triggerAC3", "manual");
+    triggerAC4 = preferences.getString("triggerAC4", "manual");
 
     preferences.end();
     toutln("preferences Loaded: ");

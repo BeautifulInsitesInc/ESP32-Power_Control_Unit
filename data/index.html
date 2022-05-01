@@ -11,146 +11,232 @@
   <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
-    <div class="topnav">
-        <img class="logo" src="cclogo.jpg">
-        <h1>Prototyping Power Control Center</h1>
-            <a href = "/update">Firmware Update</a> | <a href = "/edit">Files Update</a> | Telnet Port 23</p>
+    <div class = "content">
+        <div class="topnav">
+            <img class="logo" src="ConciergeGrowers-white.png">
+            <h1>Prototyping Power Control Center</h1>
+                <a class="toplink" href="/update">Firmware Update</a> | <a class="toplink" href="/edit">Files Update</a> (password: admin/admin) <br> Telnet Port 23</p>
 
-            <input type="button" value="Save Settings" class="btn btn-success" id="saveButton" onclick="saveSettings()"></button>
-            <input type="button" value="Load Settings" class="btn btn-danger" id="loadButton" onclick="loadSettings()"></button>
-    </div>
-    <hr>
-    <h4>DHT11 Sensor Readings</h4>
-    <div class="card-grid">
-        
-        <div class="card">
-            <p class="card-title"><i class="bi bi-thermometer-half"></i> Tempurature</p>
-            <p class="switch slide">
-                <span id="airTempC"></span>&#8451; </br>
-                <span id="airTempF"></span>&#8457;
-            </p>
-
-        </div>
-        <div class ="card">
-            <p class="card-title"><i class="bi bi-moisture"></i> Humidity</p>
-            <p class="switch slide">
-                <span id="humidity"></span>&#37;
-            </p>
-        </div>
-        
-    </div>
-
-    <div id="chart-temperature" class="container"></div>
-    <div id="chart-humidity" class="container"></div>
-    </br>
-    <hr>
-    <h4>AC Power</h4>
-    <div class="card-grid">
-        
-        <div class="card">             
-            <p class="card-title"><i class="bi bi-plug"></i> OUTLET 1</p>
-            <label class="switch toggle"> 
-                <input type="checkbox" onchange="updatePlugs(this)" id="plug1">
-                <span class="slider toggle"></span>
-            </label>
-            <p class ="state">State: <span id="plugStatus1"></span></p>
-            
-            <!-- Dropdown menu-->
-            <label for="triggerSellection">TRIGGER</label>
-            <select name="plug1triggerList" id="plug1Trigger" class="btn btn-primary btn-sm" >
-                <option value="manual">Manual</option>
-                <option value="alwaysON">Always ON</option>
-                <option value="timeClock)">Time (clock)</option>
-                <option vlaue="timeCycle">Time (Cycle)</option>
-                <option value="sensor">Sensor</option>
-            </select>
-            <!--
-            <div class="dropdown">
-                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownplug1" data-bs-toggle="dropdown" aria-expanded="false">
-                  Trigger
-                </button>
-                <input type="text" name="triggerType" list="triggerList">
-                    <datalist id="triggerList" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></datalist>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
-                        <option value="Always ON"></option>
-                        <option value="Time (clock)"></option>
-                        <option vlaue="Time (cycle)"></option>
-                        <option value="Sensor"></option>
-                    </datalist>  
-                        
-                </ul>
-              </div>
-            -->
-
-
-
-
-
+                <input type="button" value="Save Settings" class="btn btn-success" id="saveButton" onclick="saveSettings()"></button>
+                <input type="button" value="Load Settings" class="btn btn-danger" id="loadButton" onclick="loadSettings()"></button>
         </div>
 
-        <div class="card">
-            <p class="card-title"><i class="bi bi-plug"></i> OUTLET 2</p>
-            <label class="switch toggle">
-                <input type="checkbox" onchange="updatePlugs(this)" id="plug2">
-                <span class="slider toggle"></span>
-            </label>
-            <p class ="state">State: <span id="plugStatus2"></span></p>
+        <div class="header sensors_header">
+            <h4>DHT11 Sensor Readings</h4><br>
         </div>
+        <section id="sensor_section" class="main_section">
+            <div class="card-grid">
+                
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-thermometer-half"></i> Tempurature</p>
+                    <p class="switch slide">
+                        <span id="airTempC"></span>&#8451; </br>
+                        <span id="airTempF"></span>&#8457;
+                    </p>
+                </div>
+                <div class ="card">
+                    <p class="card-title"><i class="bi bi-moisture"></i> Humidity</p>
+                    <p class="switch slide">
+                        <span id="humidity"></span>&#37;
+                    </p>
+                </div>
+            </div>
 
-        <div class="card">
-            <p class="card-title"><i class="bi bi-plug"></i> OUTLET 3</p>
-            <label class="switch toggle">
-                <input type="checkbox" onchange="updatePlugs(this)" id="plug3">
-                <span class="slider toggle"></span>
-            </label>
-            <p class ="state">State: <span id="plugStatus3"></span></p>
-        </div>
-        <div class="card">
-            <p class="card-title"><i class="bi bi-plug"></i> OUTLET 4</p>
-            <label class="switch toggle">
-                <input type="checkbox" onchange="updatePlugs(this)" id="plug4">
-                <span class="slider toggle"></span>
-            </label>
-            <p class="state">State: <span id="plugStatus4"></span></p>
-        </div>
-    </div>
-    <br>
-    <hr>
-    <h4>Variable DC Power</h4>
-    <div class="card-grid">
-        <div class="card">
-            <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 1</p>
-            <p class="switch slide">
-                <input type="range" onchange="updateSliderPWM(this)" id="slider1" min="0" max="100" step="1" value ="0" class="slider slide">
-            </p>
-            <p class="state">Brightness: <span id="sliderValue1"></span> &percnt;</p>
-        </div>
-        <div class="card">
-            <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 2</p>
-            <p class="switch slide">
-                <input type="range" onchange="updateSliderPWM(this)" id="slider2" min="0" max="100" step="1" value ="0" class="slider slide">
-            </p>
-            <p class="state">Speed: <span id="sliderValue2"></span> &percnt;</p>
-        </div>
-        <div class="card">
-            <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 3</p>
-            <p class="switch slide">
-                <input type="range" onchange="updateSliderPWM(this)" id="slider3" min="0" max="100" step="1" value ="0" class="slider slide">
-            </p>
-            <p class="state">Speed: <span id="sliderValue3"></span> &percnt;</p>
-        </div>
-        <div class="card">
-            <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 4</p>
-            <p class="switch slide">
-                <input type="range" onchange="updateSliderPWM(this)" id="slider4" min="0" max="100" step="1" value ="0" class="slider slide">
-            </p>
-            <p class="state">Speed: <span id="sliderValue4"></span> &percnt;</p>
-        </div>
-        
-    </div> 
+        </section>
 
-    <script src="/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <div class="header ac_header">
+            <h4>AC Power</h4>
+        </div>
+        <section class = "main_section" id="ac_section">
+            <div class="card-grid">
+
+                <!-- AC CARD 1 -->
+                <div class="card">             
+                    <p class="card-title"><i class="bi bi-plug"></i> OUTLET 1</p>
+                    <label class="switch toggle"> 
+                        <input type="checkbox" onchange="updateStatus(this)" id="plug1">
+                        <span class="slider toggle"></span>
+                    </label>
+                    <p class ="state">State: <span id="plugStatus1"></span></p>
+
+                    <!-- ********** Dropdown menu **********-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="plug1triggerList" id="triggerPlug1" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                    <!-- time Cycle-->
+                    <form id="plugTimeCycle1" class="triggerform">
+                        <label for="p1_cycle_run_time">Run Time</label><br>
+                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
+                        <label for="p1_cycle_off_time">Off Time</label><br>
+                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
+                        <lable>(minutes)</lable>
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="p1cyclet">
+                    </form>
+                </div>
+
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-plug"></i> OUTLET 2</p>
+                    <label class="switch toggle">
+                        <input type="checkbox" onchange="updateStatus(this)" id="plug2">
+                        <span class="slider toggle"></span>
+                    </label>
+                    <p class ="state">State: <span id="plugStatus2"></span></p>
+
+                    <!-- Dropdown menu-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="plug2triggerList" id="triggerPlug2" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-plug"></i> OUTLET 3</p>
+                    <label class="switch toggle">
+                        <input type="checkbox" onchange="updateStatus(this)" id="plug3">
+                        <span class="slider toggle"></span>
+                    </label>
+                    <p class ="state">State: <span id="plugStatus3"></span></p>
+
+                    <!-- Dropdown menu-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="plug3triggerList" id="triggerPlug3" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-plug"></i> OUTLET 4</p>
+                    <label class="switch toggle">
+                        <input type="checkbox" onchange="updateStatus(this)" id="plug4">
+                        <span class="slider toggle"></span>
+                    </label>
+                    <p class="state">State: <span id="plugStatus4"></span></p>
+
+                    <!-- Dropdown menu-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="plug4triggerList" id="triggerPlug4" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                </div>
+            </div>
+        </section> <!-- AC section-->
+
+        <div class="header dc_header">
+            <h4>DC Power</h4>
+        </div>
+        <!-- =============  DC PLUG SECTION  =============== -->
+        <section class="main_section" id="dc_section">
+            <div class="card-grid">
+                <div class="card">
+                    <!-- CARD TITLE -->
+                    <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 1</p>
+                    
+                    <!-- ON OFF SWITCH -->
+                    <label class="switch toggle"> 
+                        <input type="checkbox" onchange="updateStatus(this)" id="sliderSwitch1">
+                        <span class="slider toggle"></span>
+                    </label>
+                    <p class ="state">State: <span id="sliderSwitchStatus1"></span></p>
+
+                    <!-- SLIDER -->
+                    <p class="switch slide">
+                        <input type="range" onchange="updateSliderPWM(this)" id="slider1" min="0" max="100" step="1" value ="0" class="slider slide">
+                    </p>
+                    <p class="state">Brightness: <span id="sliderValue1"></span> &percnt;</p>
+
+                    <!-- DROPDOWN MENUE -->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="DC1triggerList" id="triggerDC1" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 2</p>
+                    <p class="switch slide">
+                        <input type="range" onchange="updateSliderPWM(this)" id="slider2" min="0" max="100" step="1" value ="0" class="slider slide">
+                    </p>
+                    <p class="state">Speed: <span id="sliderValue2"></span> &percnt;</p>
+
+                    <!-- Dropdown menu-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="DC2triggerList" id="triggerDC2" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (Cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 3</p>
+                    <p class="switch slide">
+                        <input type="range" onchange="updateSliderPWM(this)" id="slider3" min="0" max="100" step="1" value ="0" class="slider slide">
+                    </p>
+                    <p class="state">Speed: <span id="sliderValue3"></span> &percnt;</p>
+
+                    <!-- Dropdown menu-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    <select name="DC3triggerList" id=triggerDC3" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (Cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                    
+                </div>
+                <div class="card">
+                    <p class="card-title"><i class="bi bi-speedometer2"></i> 12V DC 4</p>
+                    <p class="switch slide">
+                        <input type="range" onchange="updateSliderPWM(this)" id="slider4" min="0" max="100" step="1" value ="0" class="slider slide">
+                    </p>
+                    <p class="state">Speed: <span id="sliderValue4"></span> &percnt;</p>
+                    <!-- Dropdown menu-->
+                    <label for="triggerSellection">TRIGGER</label>
+                    
+                    <select name="DC4triggerList" id="triggerDC4" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        <option value="manual0">Manual</option>
+                        <option value="alwaysON1">Always ON</option>
+                        <option value="timeClock2">Time (clock)</option>
+                        <option value="timeCycle3">Time (Cycle)</option>
+                        <option value="sensor4">Sensor</option>
+                        <option value="linked5">Linked</option>
+                    </select>
+                </div>
+                
+            </div> 
+        </section> <!-- dc_section-->
+
+        <script src="/script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </div> <!-- .content -->
 </body>
 </html>
 
