@@ -69,14 +69,23 @@
                         <option value="sensor4">Sensor</option>
                         <option value="linked5">Linked</option>
                     </select>
-                    <!-- time Cycle-->
-                    <form id="TimeCycle1" class="triggerform">
+                    <!-- time CLOCK-->
+                    <form id="clockTime1" class="triggerform">
+                        <label for="p1_cycle_run_time">Start</label><br>
+                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
+                        <label for="p1_cycle_off_time">End</label><br>
+                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
+                        <lable>(minutes)</lable>
+                        <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton1">
+                    </form>
+                    <!-- time CYCLE-->
+                    <form id="cycleTime1" class="triggerform">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
                         <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
                         <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="p1cyclet">
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton1">
                     </form>
                 </div>
                 
