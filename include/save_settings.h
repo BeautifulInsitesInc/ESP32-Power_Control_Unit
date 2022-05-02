@@ -20,14 +20,14 @@ void savePreferences(){
     preferences.putString("elementStatus8", elementStatus1);
 
     //Trigger Values
-    preferences.putString("triggerStatus1", triggerStatus1);
-    preferences.putString("triggerStatus2", triggerStatus2);
-    preferences.putString("triggerStatus3", triggerStatus3);
-    preferences.putString("triggerStatus4", triggerStatus4);
-    preferences.putString("triggerStatus5", triggerStatus5);
-    preferences.putString("triggerStatus6", triggerStatus6);
-    preferences.putString("triggerStatus7", triggerStatus7);
-    preferences.putString("triggerStatus8", triggerStatus8);
+    preferences.putString("triggerSelection1", triggerSelection1);
+    preferences.putString("triggerSelection2", triggerSelection2);
+    preferences.putString("triggerSelection3", triggerSelection3);
+    preferences.putString("triggerSelection4", triggerSelection4);
+    preferences.putString("triggerSelection5", triggerSelection5);
+    preferences.putString("triggerSelection6", triggerSelection6);
+    preferences.putString("triggerSelection7", triggerSelection7);
+    preferences.putString("triggerSelection8", triggerSelection8);
 
 
     preferences.putString("sliderValue1", sliderValue1);
@@ -49,28 +49,24 @@ void savePreferences(){
 
 void loadPreferences(){
     preferences.begin("settings", true);
-    //AC plug status
     elementStatus1 = preferences.getString("elementStatus1", "off");
     elementStatus2 = preferences.getString("elementStatus2", "off");
     elementStatus3 = preferences.getString("elementStatus3", "off");
     elementStatus4 = preferences.getString("elementStatus4", "off"); 
-    //DC slide Values
     elementStatus5 = preferences.getString("elementStatus5", "off"); 
     elementStatus6 = preferences.getString("elementStatus6", "off"); 
     elementStatus7 = preferences.getString("elementStatus7", "off"); 
     elementStatus8 = preferences.getString("elementStatus8", "off"); 
 
     //Trigger Values
-    triggerStatus1 = preferences.getString("triggerStatus1", "manual");
-    triggerStatus2 = preferences.getString("triggerStatus2", "manual");
-    triggerStatus3 = preferences.getString("triggerStatus3", "manual");
-    triggerStatus4 = preferences.getString("triggerStatus4", "manual");
-
-    triggerStatus5 = preferences.getString("triggerStatus5", "manual");
-    triggerStatus6 = preferences.getString("triggerStatus6", "manual");
-    triggerStatus7 = preferences.getString("triggerStatus7", "manual");
-    triggerStatus8 = preferences.getString("triggerStatus8", "manual");
-
+    triggerSelection1 = preferences.getString("triggerSelection1", "manual0");
+    triggerSelection2 = preferences.getString("triggerSelection2", "manual0");
+    triggerSelection3 = preferences.getString("triggerSelection3", "manual0");
+    triggerSelection4 = preferences.getString("triggerSelection4", "manual0");
+    triggerSelection5 = preferences.getString("triggerSelection5", "manual0");
+    triggerSelection6 = preferences.getString("triggerSelection6", "manual0");
+    triggerSelection7 = preferences.getString("triggerSelection7", "manual0");
+    triggerSelection8 = preferences.getString("triggerSelection8", "manual0");
 
     sliderValue1 = preferences.getString("sliderValue1","0");
     sliderValue2 = preferences.getString("sliderValue2","0");

@@ -59,24 +59,24 @@ void loop()
   getDHTReadings();
 
   
-  if (elementStatus1 == "on" || triggerStatus1 == "alwasyON1") digitalWrite(AC1, LOW);
+  if (elementStatus1 == "on" || triggerSelection1 == "alwasyON1") digitalWrite(AC1, LOW);
   else digitalWrite(AC1, HIGH);
-  if (elementStatus2 == "on" || triggerStatus2 == "alwasyON1")  digitalWrite(AC2, LOW);
+  if (elementStatus2 == "on" || triggerSelection2 == "alwasyON1")  digitalWrite(AC2, LOW);
   else digitalWrite(AC2, HIGH);
-  if (elementStatus3 == "on" || triggerStatus3 == "alwasyON1")  digitalWrite(AC3, LOW);
+  if (elementStatus3 == "on" || triggerSelection3 == "alwasyON1")  digitalWrite(AC3, LOW);
   else digitalWrite(AC3, HIGH);
-  if (elementStatus4 == "on" || triggerStatus4 == "alwasyON1")  digitalWrite(AC4, LOW);
+  if (elementStatus4 == "on" || triggerSelection4 == "alwasyON1")  digitalWrite(AC4, LOW);
   else digitalWrite(AC4, HIGH);
 
 
   //Slider update
-  if (elementStatus5 == "on" || triggerStatus5 == "alwasysON1") ledcWrite(ledChannel1, dutyCycle1);
+  if (elementStatus5 == "on" || triggerSelection5 == "alwasysON1") ledcWrite(ledChannel1, dutyCycle1);
   else ledcWrite(ledChannel1, 0);
-  if (elementStatus6 == "on" || triggerStatus6 == "alwasysON1") ledcWrite(ledChannel2, dutyCycle2);
+  if (elementStatus6 == "on" || triggerSelection6 == "alwasysON1") ledcWrite(ledChannel2, dutyCycle2);
   else ledcWrite(ledChannel2, 0);
-  if (elementStatus7 == "on" || triggerStatus7 == "alwasysON1") ledcWrite(ledChannel3, dutyCycle3);
+  if (elementStatus7 == "on" || triggerSelection7 == "alwasysON1") ledcWrite(ledChannel3, dutyCycle3);
   else ledcWrite(ledChannel3, 0);
-  if (elementStatus8 == "on" || triggerStatus8 == "alwasysON1") ledcWrite(ledChannel4, dutyCycle4);
+  if (elementStatus8 == "on" || triggerSelection8 == "alwasysON1") ledcWrite(ledChannel4, dutyCycle4);
   else ledcWrite(ledChannel4, 0);
 
   if(testtimer>= millis()+10000){

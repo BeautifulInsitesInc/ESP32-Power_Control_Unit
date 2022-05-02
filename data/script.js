@@ -22,6 +22,19 @@ function loadSettings(){console.log("Load Settings Button was pressed"); websock
 
 
 // ===================== SEND STATUS CHANGES =========================
+/* html ids
+    Main switch on/off  - element itself : element1
+                        - State : elementStatus1
+    Trigger section     - trigger selection : triggerSelection1
+                            Selection Indexes: manual0, alwaysON1, timeClock2, timeCycle3, sensor4, linked5
+        timeclock section   timeclockID : clockTime1
+                            button : clockTimeButton1
+        timecycle section   timecycleID: cycleTime1
+                            Button: cycleTimeButton1
+    Sliders             - element itself: slider1
+                        - Speed: sliderValue1
+*/
+
 // ON/OFF STATUS CHANGE
 function updateStatus(element) {  
     var elementNumber = element.id.charAt(element.id.length-1);
@@ -44,7 +57,7 @@ function triggerChange(element){
     var elementNumber = element.id.charAt(element.id.length-1);
     var triggerSelection = element.value;
     var triggerSelectionIndex = element.value.charAt(element.value.length-1);
-    console.log("recieved trigger from plugNumber: "+ plugNumber +" triggerSelection : " + triggerSelection+" index number: "+triggerSelectionIndex);
+    console.log("recieved trigger from plugNumber: "+ elementNumber +" triggerSelection : " + triggerSelection+" index number: "+triggerSelectionIndex);
     websocket.send("T"+elementNumber+triggerSelectionIndex);
 }
 // =========== END SEND STATUS CHANGES =================
@@ -98,7 +111,6 @@ function onMessage(event) {
         // == UPDATE TRIGGER VALUES
         if (itemType == "t"){
             document.getElementById(key).selectedIndex = triggerValueIndex;
-            console.log("just changed selected to idex : "+triggerValueIndex+" for key :"+key+" with value:"+keyValue);
             // == SHOW OR HIDE TRIGGER VALUE INFORMATION
             switch(triggerValueIndex) {
                 case '0': //manual0

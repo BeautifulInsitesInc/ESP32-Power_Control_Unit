@@ -41,14 +41,14 @@ String getStateValues(){
   stateValues["sliderValue4"] = String(sliderValue4);
 
   //Trigger Values
-  stateValues["triggerStatus1"] = String(triggerStatus1);
-  stateValues["triggerStatus2"] = String(triggerStatus2);
-  stateValues["triggerStatus3"] = String(triggerStatus3);
-  stateValues["triggerStatus4"] = String(triggerStatus4);
-  stateValues["triggerStatus5"] = String(triggerStatus5);
-  stateValues["triggerStatus6"] = String(triggerStatus6);
-  stateValues["triggerStatus7"] = String(triggerStatus7);
-  stateValues["triggerStatus8"] = String(triggerStatus8);
+  stateValues["triggerSelection1"] = String(triggerSelection1);
+  stateValues["triggerSelection2"] = String(triggerSelection2);
+  stateValues["triggerSelection3"] = String(triggerSelection3);
+  stateValues["triggerSelection4"] = String(triggerSelection4);
+  stateValues["triggerSelection5"] = String(triggerSelection5);
+  stateValues["triggerSelection6"] = String(triggerSelection6);
+  stateValues["triggerSelection7"] = String(triggerSelection7);
+  stateValues["triggerSelection8"] = String(triggerSelection8);
 
   String jsonString = JSON.stringify(stateValues);
   toutln("Just ran GetstateValues :"); toutln(stateValues);
@@ -74,15 +74,15 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
 
       switch (elementNumber.toInt()){
         // AC Plugs
-        case 1: if (triggerStatus1 == "manual0") elementStatus1 = elementStatus; break;
-        case 2: if (triggerStatus2 == "manual0") elementStatus2 = elementStatus; break;
-        case 3: if (triggerStatus3 == "manual0") elementStatus3 = elementStatus; break;
-        case 4: if (triggerStatus4 == "manual0") elementStatus4 = elementStatus; break;
+        case 1: if (triggerSelection1 == "manual0") elementStatus1 = elementStatus; break;
+        case 2: if (triggerSelection2 == "manual0") elementStatus2 = elementStatus; break;
+        case 3: if (triggerSelection3 == "manual0") elementStatus3 = elementStatus; break;
+        case 4: if (triggerSelection4 == "manual0") elementStatus4 = elementStatus; break;
         // DC Plugs
-        case 5: if (triggerStatus5 == "manual0") triggerStatus5 = elementStatus; break;
-        case 6: if (triggerStatus6 == "manual0") triggerStatus6 = elementStatus; break;
-        case 7: if (triggerStatus7 == "manual0") triggerStatus7 = elementStatus; break;
-        case 8: if (triggerStatus8 == "manual0") triggerStatus8 = elementStatus; break;
+        case 5: if (triggerSelection5 == "manual0") triggerSelection5 = elementStatus; break;
+        case 6: if (triggerSelection6 == "manual0") triggerSelection6 = elementStatus; break;
+        case 7: if (triggerSelection7 == "manual0") triggerSelection7 = elementStatus; break;
+        case 8: if (triggerSelection8 == "manual0") triggerSelection8 = elementStatus; break;
       }
     }
     // ============  CHANGE DC SLIDER VALUES ================
@@ -111,75 +111,75 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       
       switch (elementNumber.toInt()){
         case 1: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus1 = "manual0"; break;
-                  case 1: triggerStatus1 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus1 = "timeClock2"; break;
-                  case 3: triggerStatus1 = "timeCycle3"; break;
-                  case 4: triggerStatus1 = "sensor4"; break;
-                  case 5: triggerStatus1 = "linked5"; break;
+                  case 0: triggerSelection1 = "manual0"; break;
+                  case 1: triggerSelection1 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection1 = "timeClock2"; break;
+                  case 3: triggerSelection1 = "timeCycle3"; break;
+                  case 4: triggerSelection1 = "sensor4"; break;
+                  case 5: triggerSelection1 = "linked5"; break;
                 }
                 break;
         case 2: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus2 = "manual0"; break;
-                  case 1: triggerStatus2 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus2 = "timeClock2"; break;
-                  case 3: triggerStatus2 = "timeCycle3"; break;
-                  case 4: triggerStatus2 = "sensor4"; break;
-                  case 5: triggerStatus2 = "linked5"; break;
+                  case 0: triggerSelection2 = "manual0"; break;
+                  case 1: triggerSelection2 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection2 = "timeClock2"; break;
+                  case 3: triggerSelection2 = "timeCycle3"; break;
+                  case 4: triggerSelection2 = "sensor4"; break;
+                  case 5: triggerSelection2 = "linked5"; break;
                 }
                 break;
         case 3: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus3 = "manual0"; break;
-                  case 1: triggerStatus3 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus3 = "timeClock2"; break;
-                  case 3: triggerStatus3 = "timeCycle3"; break;
-                  case 4: triggerStatus3 = "sensor4"; break;
-                  case 5: triggerStatus3 = "linked5"; break;
+                  case 0: triggerSelection3 = "manual0"; break;
+                  case 1: triggerSelection3 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection3 = "timeClock2"; break;
+                  case 3: triggerSelection3 = "timeCycle3"; break;
+                  case 4: triggerSelection3 = "sensor4"; break;
+                  case 5: triggerSelection3 = "linked5"; break;
                 }
                 break;
         case 4: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus4 = "manual0"; break;
-                  case 1: triggerStatus4 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus4 = "timeClock2"; break;
-                  case 3: triggerStatus4 = "timeCycle3"; break;
-                  case 4: triggerStatus4 = "sensor4"; break;
-                  case 5: triggerStatus4 = "linked5"; break;
+                  case 0: triggerSelection4 = "manual0"; break;
+                  case 1: triggerSelection4 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection4 = "timeClock2"; break;
+                  case 3: triggerSelection4 = "timeCycle3"; break;
+                  case 4: triggerSelection4 = "sensor4"; break;
+                  case 5: triggerSelection4 = "linked5"; break;
                 }
                 break;
         case 5: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus5 = "manual0"; break;
-                  case 1: triggerStatus5 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus5 = "timeClock2"; break;
-                  case 3: triggerStatus5 = "timeCycle3"; break;
-                  case 4: triggerStatus5 = "sensor4"; break;
-                  case 5: triggerStatus5 = "linked5"; break;
+                  case 0: triggerSelection5 = "manual0"; break;
+                  case 1: triggerSelection5 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection5 = "timeClock2"; break;
+                  case 3: triggerSelection5 = "timeCycle3"; break;
+                  case 4: triggerSelection5 = "sensor4"; break;
+                  case 5: triggerSelection5 = "linked5"; break;
                 }
                 break;
         case 6: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus6 = "manual0"; break;
-                  case 1: triggerStatus6 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus6 = "timeClock2"; break;
-                  case 3: triggerStatus6 = "timeCycle3"; break;
-                  case 4: triggerStatus6 = "sensor4"; break;
-                  case 5: triggerStatus6 = "linked5"; break;
+                  case 0: triggerSelection6 = "manual0"; break;
+                  case 1: triggerSelection6 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection6 = "timeClock2"; break;
+                  case 3: triggerSelection6 = "timeCycle3"; break;
+                  case 4: triggerSelection6 = "sensor4"; break;
+                  case 5: triggerSelection6 = "linked5"; break;
                 }
                 break;
         case 7: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus7 = "manual0"; break;
-                  case 1: triggerStatus7 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus7 = "timeClock2"; break;
-                  case 3: triggerStatus7 = "timeCycle3"; break;
-                  case 4: triggerStatus7 = "sensor4"; break;
-                  case 5: triggerStatus7 = "linked5"; break;
+                  case 0: triggerSelection7 = "manual0"; break;
+                  case 1: triggerSelection7 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection7 = "timeClock2"; break;
+                  case 3: triggerSelection7 = "timeCycle3"; break;
+                  case 4: triggerSelection7 = "sensor4"; break;
+                  case 5: triggerSelection7 = "linked5"; break;
                 }
                 break;
         case 8: switch (triggerSelectionIndex.toInt()){
-                  case 0: triggerStatus8 = "manual0"; break;
-                  case 1: triggerStatus8 = "alwaysON1"; elementStatus1 = "on"; break;
-                  case 2: triggerStatus8 = "timeClock2"; break;
-                  case 3: triggerStatus8 = "timeCycle3"; break;
-                  case 4: triggerStatus8 = "sensor4"; break;
-                  case 5: triggerStatus8 = "linked5"; break;
+                  case 0: triggerSelection8 = "manual0"; break;
+                  case 1: triggerSelection8 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerSelection8 = "timeClock2"; break;
+                  case 3: triggerSelection8 = "timeCycle3"; break;
+                  case 4: triggerSelection8 = "sensor4"; break;
+                  case 5: triggerSelection8 = "linked5"; break;
                 }
                 break;
       } 

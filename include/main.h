@@ -53,22 +53,19 @@ String elementStatus1 = "off";
 String elementStatus2 = "off";
 String elementStatus3 = "off";
 String elementStatus4 = "off";
-
 String elementStatus5 = "off";
 String elementStatus6 = "off";
 String elementStatus7 = "off";
 String elementStatus8 = "off";
 
-
-String triggerStatus1= "manual0";
-String triggerStatus2= "manual0";
-String triggerStatus3= "manual0";
-String triggerStatus4= "manual0";
-
-String triggerStatus5= "manual0";
-String triggerStatus6= "manual0";
-String triggerStatus7= "manual0";
-String triggerStatus8= "manual0";
+String triggerSelection1= "manual0";
+String triggerSelection2= "manual0";
+String triggerSelection3= "manual0";
+String triggerSelection4= "manual0";
+String triggerSelection5= "manual0";
+String triggerSelection6= "manual0";
+String triggerSelection7= "manual0";
+String triggerSelection8= "manual0";
 
 String sliderValue1 = "0";
 String sliderValue2 = "0";
