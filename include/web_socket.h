@@ -34,8 +34,6 @@ String getStateValues(){
   stateValues["elementStatus7"] = String(elementStatus7);
   stateValues["elementStatus8"] = String(elementStatus8);
 
-
-
   //DC sliders
   stateValues["sliderValue1"] = String(sliderValue1);
   stateValues["sliderValue2"] = String(sliderValue2);
@@ -57,10 +55,8 @@ String getStateValues(){
   return jsonString;
 }
 
+void notifyClients(String settings) {ws.textAll(settings);}
 
-void notifyClients(String settings) {
-  ws.textAll(settings);
-}
 
 // callback function that will run whenever we receive new data from the clients via WebSocket protocol.
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -71,7 +67,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     tout("websocket.h recieved message : "); toutln(message);
 
     // ============== TURN ELEMENTS ON OR OFF ==============
-    if (message.indexOf("S") >=0) {// If the message is status change (on/off)
+    if (message.indexOf("S") >=0) {// "S" - status change. ie: S1on If the message is status change (on/off)
       String elementNumber = message.substring(1,2);
       String elementStatus = message.substring(2);
       tout("Status message recieved, elementNumber: "); tout(elementNumber); tout(" Element status: ");toutln(elementStatus);
@@ -90,132 +86,107 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       }
     }
     // ============  CHANGE DC SLIDER VALUES ================
+    if (message.indexOf("M") >=0) {// "M" - Motor control ie: M178- change if slider is moved
+      String elementNumber = message.substring(1,2);
+      String sliderValue = message.substring(2);
+      tout("Slider movement message recieved. Elementnumber: ");tout(elementNumber);tout(" slidervalue: ");toutln(sliderValue);
 
-    if (message.indexOf("1s") >= 0) {
-      sliderValue1 = message.substring(2);
-      dutyCycle1 = map(sliderValue1.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-    if (message.indexOf("2s") >= 0) {
-      sliderValue2 = message.substring(2);
-      dutyCycle2 = map(sliderValue2.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-
-    if (message.indexOf("3s") >= 0) {
-      sliderValue3 = message.substring(2);
-      dutyCycle3 = map(sliderValue3.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-
-    if (message.indexOf("4s") >= 0) {
-      sliderValue4 = message.substring(2);
-      dutyCycle4 = map(sliderValue4.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-
-    if (strcmp((char*)data, "getValues") == 0) {
-      //notifyClients(getStateValues());
-    }
-
-    //if (message = "saveSettings"){
-    if (strcmp((char*)data, "saveSettings") == 0) {
-      toutln("message recieved savesettings running save preferences");
-      savePreferences();
-       
-    }
-
-    //if (message = "loadSettings") {
-    if (strcmp((char*)data, "loadSettings") == 0) {
-      toutln("message reciebed to load settings");
-      loadPreferences();
-    }
-
-    if (message.indexOf("T") >=0){
-      String plugNumber = message.substring(1,2);
-      String triggerSelectionIndex = message.substring(2,3);
-      tout("Message recieved Trigger plug number :");tout(plugNumber);tout(" Substring :");toutln(triggerSelectionIndex);
-      toutln("message was ");toutln(message);
-      switch (plugNumber.toInt()){
-
-        case 1: // switch 1
-          switch (triggerSelectionIndex.toInt()){
-              case 0: //manual
-                toutln("plug 1 index 0 chosen");
-                triggerStatus1 = "manual0";
-                break;
-              case 1: // always on
-                toutln("plug 1 index 1 has been chosen");
-                elementStatus1 = "on";
-                triggerStatus1 = "alwaysON1";
-                break;
-          }
-
-          break;
-        case 2: // switch 2
-          switch (triggerSelectionIndex.toInt()){
-              case 0: //manual
-                toutln("plug 2 index 0 chosen");
-                triggerStatus2 = "manual0";
-                break;
-              case 1:
-                toutln("plug 2 index 1 has been chosen");
-                elementStatus2 = "on";
-                triggerStatus2 = "alwaysON1";
-                break;
-          }
-          break;
-
-        case 3: // switch 3
-          switch (triggerSelectionIndex.toInt()){
-            case 0: //manual
-              toutln("plug 3 index 0 chosen");
-              triggerStatus3 = "manual0";
-              break;
-            case 1:
-              toutln("plug 3 index 1 has been chosen");
-              elementStatus3 = "on";
-              triggerStatus3 = "alwaysON1";
-              break;
-          }
-          break;
-
-        case 4:
-          switch (triggerSelectionIndex.toInt()){
-            case 0: //manual
-              toutln("plug 4 index 0 chosen");
-              triggerStatus4 = "manual0";
-              break;
-            case 1:
-              toutln("plug 4 index 1 has been chosen");
-              elementStatus4 = "on";
-              triggerStatus4 = "alwaysON1";
-              break;
-          }
-          break;
-          
-        case 5:
-          break;
-        case 6:
-          break;
-        case 7:
-          break;
-        case 8:
-          break;
-        case 9:
-          break;
-        
-        
-        default:
-          break;
+      switch (elementNumber.toInt()){
+        case 1: sliderValue1 = sliderValue; dutyCycle1 = map(sliderValue1.toInt(), 0, 100, 0, 255); break;
+        case 2: sliderValue2 = sliderValue; dutyCycle2 = map(sliderValue2.toInt(), 0, 100, 0, 255); break;
+        case 3: sliderValue3 = sliderValue; dutyCycle3 = map(sliderValue3.toInt(), 0, 100, 0, 255); break;
+        case 4: sliderValue4 = sliderValue; dutyCycle4 = map(sliderValue4.toInt(), 0, 100, 0, 255); break;
       }
-      //notifyClients(getStateValues());
+    }
 
+    // SAVE AND LOAD SETTINGS MESSAGE
+    if (strcmp((char*)data, "saveSettings") == 0) savePreferences();
+    if (strcmp((char*)data, "loadSettings") == 0) loadPreferences();
+
+    // ============= CHANGE TRIGGER SELECTION =================
+    if (message.indexOf("T") >=0){// ie: T12 - First digit element, 2nd index of trigger selection
+      String elementNumber = message.substring(1,2);
+      String triggerSelectionIndex = message.substring(2,3);
+      tout("Message recieved Trigger element number :");tout(elementNumber);tout(" Substring :");toutln(triggerSelectionIndex);
+      
+      switch (elementNumber.toInt()){
+        case 1: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus1 = "manual0"; break;
+                  case 1: triggerStatus1 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus1 = "timeClock2"; break;
+                  case 3: triggerStatus1 = "timeCycle3"; break;
+                  case 4: triggerStatus1 = "sensor4"; break;
+                  case 5: triggerStatus1 = "linked5"; break;
+                }
+                break;
+        case 2: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus2 = "manual0"; break;
+                  case 1: triggerStatus2 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus2 = "timeClock2"; break;
+                  case 3: triggerStatus2 = "timeCycle3"; break;
+                  case 4: triggerStatus2 = "sensor4"; break;
+                  case 5: triggerStatus2 = "linked5"; break;
+                }
+                break;
+        case 3: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus3 = "manual0"; break;
+                  case 1: triggerStatus3 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus3 = "timeClock2"; break;
+                  case 3: triggerStatus3 = "timeCycle3"; break;
+                  case 4: triggerStatus3 = "sensor4"; break;
+                  case 5: triggerStatus3 = "linked5"; break;
+                }
+                break;
+        case 4: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus4 = "manual0"; break;
+                  case 1: triggerStatus4 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus4 = "timeClock2"; break;
+                  case 3: triggerStatus4 = "timeCycle3"; break;
+                  case 4: triggerStatus4 = "sensor4"; break;
+                  case 5: triggerStatus4 = "linked5"; break;
+                }
+                break;
+        case 5: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus5 = "manual0"; break;
+                  case 1: triggerStatus5 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus5 = "timeClock2"; break;
+                  case 3: triggerStatus5 = "timeCycle3"; break;
+                  case 4: triggerStatus5 = "sensor4"; break;
+                  case 5: triggerStatus5 = "linked5"; break;
+                }
+                break;
+        case 6: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus6 = "manual0"; break;
+                  case 1: triggerStatus6 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus6 = "timeClock2"; break;
+                  case 3: triggerStatus6 = "timeCycle3"; break;
+                  case 4: triggerStatus6 = "sensor4"; break;
+                  case 5: triggerStatus6 = "linked5"; break;
+                }
+                break;
+        case 7: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus7 = "manual0"; break;
+                  case 1: triggerStatus7 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus7 = "timeClock2"; break;
+                  case 3: triggerStatus7 = "timeCycle3"; break;
+                  case 4: triggerStatus7 = "sensor4"; break;
+                  case 5: triggerStatus7 = "linked5"; break;
+                }
+                break;
+        case 8: switch (triggerSelectionIndex.toInt()){
+                  case 0: triggerStatus8 = "manual0"; break;
+                  case 1: triggerStatus8 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 2: triggerStatus8 = "timeClock2"; break;
+                  case 3: triggerStatus8 = "timeCycle3"; break;
+                  case 4: triggerStatus8 = "sensor4"; break;
+                  case 5: triggerStatus8 = "linked5"; break;
+                }
+                break;
+      } 
     }
     notifyClients(getStateValues());
     notifyClients(getSensorValues());
   }
-  
 }
 
 /*The type argument represents the event that occurs. It can take the following values:
@@ -259,3 +230,30 @@ void websocketloop() {
 
 
 #endif
+
+
+ /* previous slider control seciton
+
+    if (message.indexOf("1s") >= 0) {
+      sliderValue1 = message.substring(2);
+      dutyCycle1 = map(sliderValue1.toInt(), 0, 100, 0, 255);
+      //notifyClients(getStateValues());
+    }
+    if (message.indexOf("2s") >= 0) {
+      sliderValue2 = message.substring(2);
+      dutyCycle2 = map(sliderValue2.toInt(), 0, 100, 0, 255);
+      //notifyClients(getStateValues());
+    }
+
+    if (message.indexOf("3s") >= 0) {
+      sliderValue3 = message.substring(2);
+      dutyCycle3 = map(sliderValue3.toInt(), 0, 100, 0, 255);
+      //notifyClients(getStateValues());
+    }
+
+    if (message.indexOf("4s") >= 0) {
+      sliderValue4 = message.substring(2);
+      dutyCycle4 = map(sliderValue4.toInt(), 0, 100, 0, 255);
+      //notifyClients(getStateValues());
+    }
+    */
