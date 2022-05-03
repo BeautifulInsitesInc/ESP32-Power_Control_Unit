@@ -2,8 +2,7 @@
 #define MAIN_H
 
 #include <Arduino.h>
-//#include <ArduinoJson.h>
-
+#include "time.h"
 // --- DEBUGGING ---
 #define DEBUG // Comment out to remove all serial prints
 
@@ -47,6 +46,14 @@ const int DC2 = 27;
 const int DC3 = 32;
 const int DC4 = 23;//23 25
 
+
+// ========== TIME SETUP ==========
+const char* ntpServer = "pool.ntp.org";
+const long  gmtOffset_sec = -18000; // 3600 seconds per hour
+const int   daylightOffset_sec = 3600;
+unsigned long time_clock;
+
+
 String message = "";
 //Toggle switches starting values
 String elementStatus1 = "off"; 
@@ -67,10 +74,10 @@ String triggerSelection6= "manual0";
 String triggerSelection7= "manual0";
 String triggerSelection8= "manual0";
 
-String sliderValue1 = "0";
-String sliderValue2 = "0";
-String sliderValue3 = "0";
-String sliderValue4 = "0";
+String sliderValue5 = "0";
+String sliderValue6 = "0";
+String sliderValue7 = "0";
+String sliderValue8 = "0";
 
 int dutyCycle1;
 int dutyCycle2;
@@ -86,6 +93,18 @@ const int ledChannel4 = 3;
 
 const int resolution = 8;
 
+//clockTime variables
+
+//clockCycle variables
+int cycleOn1, cycleOff1;
+int cycleOn2, cycleOff2;
+int cycleOn3, cycleOff3;
+int cycleOn4, cycleOff4;
+int cycleOn5, cycleOff5;
+int cycleOn6, cycleOff6;
+int cycleOn7, cycleOff7;
+int cycleOn8, cycleOff8;
+
 // ************* GLOBAL VARIABLES ***********************
 int dht_timer_start = millis();
 int dht_timer_period = 30; //time in seconds between readings
@@ -93,8 +112,7 @@ float dht_tempC = 0;
 float dht_tempF = 0;
 float dht_humidity = 0;
 
-//bool led_on = true;
-//String JSONtxt;
+String fullDate;
 
 // ******* INCLUDE FILES *********************
 #include "display.h"
@@ -140,4 +158,42 @@ void pinSetup(){
   ledcAttachPin(DC3, ledChannel3);
   ledcAttachPin(DC4, ledChannel4);
 }
+//Time variables
+char time_dayOfWeek[10];
+char time_month[10];
+char time_dayOfMonth[3];
+char time_year[5];
+char time_hour24[3];
+char time_hour12[3];
+char time_minute[3];
+char time_second[3];
+
+
+
+
+void setLocalTime(){
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+    return;
+  }
+  strftime(time_dayOfWeek,10,"%A", &timeinfo);
+  strftime(time_month, 10, "%B", &timeinfo);
+  strftime(time_dayOfMonth, 3, "%d", &timeinfo);
+  strftime(time_year, 5, "%Y", &timeinfo);
+  strftime(time_hour24, 3, "%H", &timeinfo);
+  strftime(time_hour24, 3, "%I", &timeinfo);
+  strftime(time_minute, 3, "%M", &timeinfo);
+  strftime(time_second, 3, "%S", &timeinfo);
+
+  fullDate = String(time_dayOfWeek)+ ", " + String(time_month) +" "+String(time_dayOfMonth)+" "+String(time_year)+" "+String(time_hour24)+":"+String(time_minute);//+":"+String(time_second);
+
+  tout("Date :");tout(time_dayOfWeek);tout(time_month);tout(time_dayOfMonth);
+  tout(time_year);tout(time_hour24);tout(time_minute);toutln(time_second);
+  toutln(fullDate);
+  notifyClients(getSensorValues());
+  
+}
+
+
 #endif

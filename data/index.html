@@ -19,6 +19,11 @@
 
                 <input type="button" value="Save Settings" class="btn btn-success" id="saveButton" onclick="saveSettings()"></button>
                 <input type="button" value="Load Settings" class="btn btn-danger" id="loadButton" onclick="loadSettings()"></button>
+                </br>
+                <div class = "date">
+                    <span id="fullDate"></span>
+                </div>
+
         </div>
 
         <div class="header sensors_header">
@@ -70,21 +75,25 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime1" class="triggerform">
-                        <label for="p1_cycle_run_time">Start</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">End</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
+                    <form id="clockTime1" class="triggerform" style="display:none;">
+                        <label for="clockTimeOn1">Start</label><br>
+                        <input type="text" id="clockTimeOn1" name="clockTimeOn1"><br>
+                        <label for="clockTimeOff1">End</label><br>
+                        <input type="text" id="clockTimeOff1" name="clockTimeOff1"><br>
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton1">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime1" class="triggerform">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
+                    <form id="cycleTime1" class="triggerform" style="display:none;">
+                        <div class="currentCycleTimes">
+                             ON TIME:<span id="currentRunTime1"></span><br>
+                            OFF TIME:<span id="currentOffTime1"></span>
+                        </div>
                         <lable>(minutes)</lable>
+                        <label for="cycleTimeOn1">Run Time</label><br>
+                        <input type="text" id="cycleTimeOn1" name="cycleTimeOn1"><br>
+                        <label for="cycleTimeOff1">Off Time</label><br>
+                        <input type="text" id="cycleTimeOff1" name="cycleTimeOff1"><br>
+                        
                         <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton1">
                     </form>
                 </div>
@@ -109,7 +118,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime2" class="triggerform">
+                    <form id="clockTime2" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -118,7 +127,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton2">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime2" class="triggerform">
+                    <form id="cycleTime2" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
@@ -148,7 +157,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime3" class="triggerform">
+                    <form id="clockTime3" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -157,7 +166,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton3">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime3" class="triggerform">
+                    <form id="cycleTime3" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
@@ -187,7 +196,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime4" class="triggerform">
+                    <form id="clockTime4" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -196,7 +205,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton4">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime4" class="triggerform">
+                    <form id="cycleTime4" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
@@ -226,10 +235,8 @@
                     <p class ="state">State: <span id="elementStatus5"></span></p>
 
                     <!-- SLIDER -->
-                    <p class="switch slide">
-                        <input type="range" onchange="updateSliderPWM(this)" id="slider1" min="0" max="100" step="1" value ="0" class="slider slide">
-                    </p>
-                    <p class="state">Power: <span id="sliderValue1"></span> &percnt;</p>
+                    <input type="range" onchange="updateSliderPWM(this)" id="slider5" min="0" max="100" step="1" value ="0" class="dcslider">
+                    <p class="state">Power: <span id="sliderValue5"></span> &percnt;</p>
 
                     <!-- DROPDOWN MENU -->
                     <label for="triggerSelection5">TRIGGER</label>
@@ -242,7 +249,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime5" class="triggerform">
+                    <form id="clockTime5" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -251,7 +258,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton5">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime5" class="triggerform">
+                    <form id="cycleTime5" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
@@ -272,10 +279,8 @@
                     </label>
                     <p class ="state">State: <span id="elementStatus6"></span></p>
 
-                    <p class="switch slide">
-                        <input type="range" onchange="updateSliderPWM(this)" id="slider2" min="0" max="100" step="1" value ="0" class="slider slide">
-                    </p>
-                    <p class="state">Power: <span id="sliderValue2"></span> &percnt;</p>
+                    <input type="range" onchange="updateSliderPWM(this)" id="slider6" min="0" max="100" step="1" value ="0" class="dcslider">
+                    <p class="state">Power: <span id="sliderValue6"></span> &percnt;</p>
 
                     <!-- Dropdown menu-->
                     <label for="triggerSelection6">TRIGGER</label>
@@ -288,7 +293,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime6" class="triggerform">
+                    <form id="clockTime6" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -297,7 +302,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton6">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime6" class="triggerform">
+                    <form id="cycleTime6" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
@@ -318,10 +323,8 @@
                     </label>
                     <p class ="state">State: <span id="elementStatus7"></span></p>
 
-                    <p class="switch slide">
-                        <input type="range" onchange="updateSliderPWM(this)" id="slider3" min="0" max="100" step="1" value ="0" class="slider slide">
-                    </p>
-                    <p class="state">Power: <span id="sliderValue3"></span> &percnt;</p>
+                    <input type="range" onchange="updateSliderPWM(this)" id="slider7" min="0" max="100" step="1" value ="0" class="dcslider">
+                    <p class="state">Power: <span id="sliderValue7"></span> &percnt;</p>
 
                     <!-- Dropdown menu-->
                     <label for="triggerSelection7">TRIGGER</label>
@@ -334,7 +337,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime7" class="triggerform">
+                    <form id="clockTime7" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -343,7 +346,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton7">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime7" class="triggerform">
+                    <form id="cycleTime7" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>
@@ -365,14 +368,15 @@
                     </label>
                     <p class ="state">State: <span id="elementStatus8"></span></p>
 
-                    <p class="switch slide">
-                        <input type="range" onchange="updateSliderPWM(this)" id="slider4" min="0" max="100" step="1" value ="0" class="slider slide">
-                    </p>
-                    <p class="state">Power: <span id="sliderValue4"></span> &percnt;</p>
+                    <input type="range" onchange="updateSliderPWM(this)" id="slider8"  min="0" max="100" step="1" value ="0" class="dcslider">
+
+
+                    <p class="state">Power: <span id="sliderValue8"></span> &percnt;</p>
                     <!-- Dropdown menu-->
                     <label for="triggerSelection8">TRIGGER</label>
                     
                     <select name="triggerList8" id="triggerSelection8" class="btn btn-primary btn-sm" onchange="triggerChange(this)" >
+                        
                         <option value="manual0">Manual</option>
                         <option value="alwaysON1">Always ON</option>
                         <option value="timeClock2">Time (clock)</option>
@@ -381,7 +385,7 @@
                         <option value="linked5">Linked</option>
                     </select>
                     <!-- time CLOCK-->
-                    <form id="clockTime8" class="triggerform">
+                    <form id="clockTime8" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Start</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">End</label><br>
@@ -390,7 +394,7 @@
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton8">
                     </form>
                     <!-- time CYCLE-->
-                    <form id="cycleTime8" class="triggerform">
+                    <form id="cycleTime8" class="triggerform" style="display:none;">
                         <label for="p1_cycle_run_time">Run Time</label><br>
                         <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
                         <label for="p1_cycle_off_time">Off Time</label><br>

@@ -7,13 +7,11 @@ Preferences preferences;
 
 void savePreferences(){
     preferences.begin("settings", false);
-    //AC plug status
+
     preferences.putString("elementStatus1", elementStatus1);
     preferences.putString("elementStatus2", elementStatus2); 
     preferences.putString("elementStatus3", elementStatus3); 
     preferences.putString("elementStatus4", elementStatus4); 
-    //DC slide values
-    int duty_cycle1 = dutyCycle1;
     preferences.putString("elementStatus5", elementStatus1);
     preferences.putString("elementStatus6", elementStatus1);
     preferences.putString("elementStatus7", elementStatus1);
@@ -30,20 +28,12 @@ void savePreferences(){
     preferences.putString("triggerSelection8", triggerSelection8);
 
 
-    preferences.putString("sliderValue1", sliderValue1);
-    preferences.putString("sliderValue2", sliderValue2);
-    preferences.putString("sliderValue3", sliderValue3);
-    preferences.putString("sliderValue4", sliderValue4);
-
-   
-    
+    preferences.putString("sliderValue5", sliderValue5);
+    preferences.putString("sliderValue6", sliderValue6);
+    preferences.putString("sliderValue7", sliderValue7);
+    preferences.putString("sliderValue8", sliderValue8);
 
     preferences.end();
-    toutln("Preferences Saved");
-    tout("Saved elementStatus2 : "); toutln(elementStatus2);
-    tout("duty1 :"); toutln(dutyCycle1);
-    tout("duty2 :"); toutln(dutyCycle2);
-    tout("sliderValue1 : "); toutln(sliderValue1);
 
 }
 
@@ -68,19 +58,14 @@ void loadPreferences(){
     triggerSelection7 = preferences.getString("triggerSelection7", "manual0");
     triggerSelection8 = preferences.getString("triggerSelection8", "manual0");
 
-    sliderValue1 = preferences.getString("sliderValue1","0");
-    sliderValue2 = preferences.getString("sliderValue2","0");
-    sliderValue3 = preferences.getString("sliderValue3","0");
-    sliderValue4 = preferences.getString("sliderValue4","0");
+    sliderValue5 = preferences.getString("sliderValue5","0");
+    sliderValue6 = preferences.getString("sliderValue6","0");
+    sliderValue7 = preferences.getString("sliderValue7","0");
+    sliderValue8 = preferences.getString("sliderValue8","0");
 
  
 
     preferences.end();
-    toutln("preferences Loaded: ");
-    tout("plugstatus2 :");tout(elementStatus2);
-    tout("duty1 :"); toutln(dutyCycle1);
-    tout("duty2 :"); toutln(dutyCycle2);
-    tout("sliderValue1 : "); toutln(sliderValue1);
 }
 
 

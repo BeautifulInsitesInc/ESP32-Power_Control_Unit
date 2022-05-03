@@ -38,8 +38,20 @@ function loadSettings(){console.log("Load Settings Button was pressed"); websock
 // ON/OFF STATUS CHANGE
 function updateStatus(element) {  
     var elementNumber = element.id.charAt(element.id.length-1);
-    if (element.checked){document.getElementById("elementStatus"+elementNumber).innerHTML = "ON!"; elementStatus = "on";}
-    else {document.getElementById("elementStatus"+elementNumber).innerHTML = "OFF"; elementStatus = "off";    }
+    if (element.checked){
+        document.getElementById("elementStatus"+elementNumber).innerHTML = "ON!";
+        elementStatus = "on";
+        // Disable the slider
+        if (elementNumber>4) document.getElementById("slider"+elementNumber).removeAttribute('disabled');
+    }
+    else {
+        document.getElementById("elementStatus"+elementNumber).innerHTML = "OFF";
+        elementStatus = "off";
+        // Enable the slider
+        if (elementNumber>4) document.getElementById("slider"+elementNumber).setAttribute("disabled","true");
+
+    }
+
 
     // Send S1on = "Status", Element 1, on/off
     var statusUpdate = "S" + elementNumber + elementStatus;
@@ -49,7 +61,7 @@ function updateStatus(element) {
 function updateSliderPWM(element) {  
     var elementNumber = element.id.charAt(element.id.length-1);
     var sliderValue = document.getElementById(element.id).value;
-    document.getElementById("sliderValue"+sliderNumber).innerHTML = sliderValue;
+    document.getElementById("sliderValue"+elementNumber).innerHTML = sliderValue;
     websocket.send("M"+elementNumber+sliderValue.toString());
 }
 
@@ -65,9 +77,11 @@ function triggerChange(element){
 
 // SETUP TIME CYCLE
 function setCycleTime(element){
-    var elementNumber = element.id;
-    console.log("elementNumber :"+elementNumber);
-
+    var elementNumber = element.id.charAt(element.id.length-1);
+    var cycleTimeOn = document.getElementById("cycleTimeOn"+elementNumber).value;
+    var cycleTimeOff = document.getElementById("cycleTimeOff"+elementNumber).value;
+    console.log("elementNumber :"+elementNumber+" cycletimeONe: "+cycleTimeOn);
+    websocket.send("cycle-"+elementNumber+"-"+cycleTimeOn+"-"+cycleTimeOff);
 }
 
 function onMessage(event) {
@@ -91,9 +105,13 @@ function onMessage(event) {
             if (keyValue == "on"){
                 document.getElementById(elementID).checked = true;
                 document.getElementById(elementStatusID).innerHTML = "ON";
+                if (elementNumber>4) document.getElementById("slider"+elementNumber).removeAttribute('disabled');
+
             } else {
                 document.getElementById(elementID).checked = false;
                 document.getElementById(elementStatusID).innerHTML = "OFF";
+                if (elementNumber>4) document.getElementById("slider"+elementNumber).setAttribute("disabled","true");
+
             } 
         }
         
@@ -107,6 +125,7 @@ function onMessage(event) {
         if (key == "airTempC") document.getElementById(key).innerHTML = keyValue;
         if (key == "airTempF")document.getElementById(key).innerHTML = keyValue;
         if (key == "humidity")document.getElementById(key).innerHTML = keyValue;
+        if (key == "fullDate")document.getElementById(key).innerHTML = keyValue;
 
         // == UPDATE TRIGGER VALUES
         if (itemType == "t"){

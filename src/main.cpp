@@ -1,9 +1,6 @@
 #include "main.h"
 
-
 //JSONVar settingValues;
-
-
 
 void setup()
 {
@@ -11,32 +8,27 @@ void setup()
   outln("Starting");
   displaySetup();
   outln("Displaying Splash Screen");
-
-  // Setup all the pins
-  pinSetup(); 
-
+  
+  pinSetup(); // Setup all the pins
   wifiManagerSetup(); // WiFi Manager, SPIFF uploader, OTA Updates
 
    // Web Server Root URL
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/index.html", "text/html");
   });
-  
   server.serveStatic("/", SPIFFS, "/");
-
   AsyncElegantOTA.begin(&server);
-  
-  /* *********** start websocket server  ************
-  bind a handling function to our websocket endpoint, 
-  in order for our code to run when a websocket event occurs.
-  We do this by calling the onEvent method on our AsyncWebSocket object.
-   initializes the WebSocket protocol.
-  */
-  ws.onEvent(onEvent);
-  server.addHandler(&ws);
+
+  ws.onEvent(onEvent); // start websocket server
+  server.addHandler(&ws); 
 
   server.begin();
   TelnetServer.begin();
+
+  // Init and get the time
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  setLocalTime();
+
 
   digitalWrite(LED_BUILTIN, LOW);
 
@@ -47,7 +39,6 @@ void setup()
 
 }
 
-String previousState = "off";
 unsigned long testtimer = millis();
 void loop()
 {
@@ -79,9 +70,10 @@ void loop()
   if (elementStatus8 == "on" || triggerSelection8 == "alwasysON1") ledcWrite(ledChannel4, dutyCycle4);
   else ledcWrite(ledChannel4, 0);
 
-  if(testtimer>= millis()+10000){
-    testtimer = millis();
-    notifyClients(getStateValues());
+  if(millis() >= testtimer){
+    testtimer = millis()+15000;
+    //notifyClients(getStateValues());
+    setLocalTime();
   }
 
 }

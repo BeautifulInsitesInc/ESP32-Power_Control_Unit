@@ -18,6 +18,7 @@ String getSensorValues(){
   sensorValues["airTempC"] = String(dht_tempC);
   sensorValues["airTempF"] = String(dht_tempF);
   sensorValues["humidity"] = String(dht_humidity,0);
+  sensorValues["fullDate"] = String(fullDate);
   String jsonString = JSON.stringify(sensorValues);
   return jsonString;
 }
@@ -35,10 +36,10 @@ String getStateValues(){
   stateValues["elementStatus8"] = String(elementStatus8);
 
   //DC sliders
-  stateValues["sliderValue1"] = String(sliderValue1);
-  stateValues["sliderValue2"] = String(sliderValue2);
-  stateValues["sliderValue3"] = String(sliderValue3);
-  stateValues["sliderValue4"] = String(sliderValue4);
+  stateValues["sliderValue5"] = String(sliderValue5);
+  stateValues["sliderValue6"] = String(sliderValue6);
+  stateValues["sliderValue7"] = String(sliderValue7);
+  stateValues["sliderValue8"] = String(sliderValue8);
 
   //Trigger Values
   stateValues["triggerSelection1"] = String(triggerSelection1);
@@ -50,13 +51,15 @@ String getStateValues(){
   stateValues["triggerSelection7"] = String(triggerSelection7);
   stateValues["triggerSelection8"] = String(triggerSelection8);
 
+  stateValues["cycleOn1"] = String (cycleOn1);
+  stateValues["cycleOff1"] = String (cycleOff1);
+
   String jsonString = JSON.stringify(stateValues);
   toutln("Just ran GetstateValues :"); toutln(stateValues);
   return jsonString;
 }
 
 void notifyClients(String settings) {ws.textAll(settings);}
-
 
 // callback function that will run whenever we receive new data from the clients via WebSocket protocol.
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -78,11 +81,10 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
         case 2: if (triggerSelection2 == "manual0") elementStatus2 = elementStatus; break;
         case 3: if (triggerSelection3 == "manual0") elementStatus3 = elementStatus; break;
         case 4: if (triggerSelection4 == "manual0") elementStatus4 = elementStatus; break;
-        // DC Plugs
-        case 5: if (triggerSelection5 == "manual0") triggerSelection5 = elementStatus; break;
-        case 6: if (triggerSelection6 == "manual0") triggerSelection6 = elementStatus; break;
-        case 7: if (triggerSelection7 == "manual0") triggerSelection7 = elementStatus; break;
-        case 8: if (triggerSelection8 == "manual0") triggerSelection8 = elementStatus; break;
+        case 5: if (triggerSelection5 == "manual0") elementStatus5 = elementStatus; break;
+        case 6: if (triggerSelection6 == "manual0") elementStatus6 = elementStatus; break;
+        case 7: if (triggerSelection7 == "manual0") elementStatus7 = elementStatus; break;
+        case 8: if (triggerSelection8 == "manual0") elementStatus8 = elementStatus; break;
       }
     }
     // ============  CHANGE DC SLIDER VALUES ================
@@ -92,10 +94,10 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       tout("Slider movement message recieved. Elementnumber: ");tout(elementNumber);tout(" slidervalue: ");toutln(sliderValue);
 
       switch (elementNumber.toInt()){
-        case 1: sliderValue1 = sliderValue; dutyCycle1 = map(sliderValue1.toInt(), 0, 100, 0, 255); break;
-        case 2: sliderValue2 = sliderValue; dutyCycle2 = map(sliderValue2.toInt(), 0, 100, 0, 255); break;
-        case 3: sliderValue3 = sliderValue; dutyCycle3 = map(sliderValue3.toInt(), 0, 100, 0, 255); break;
-        case 4: sliderValue4 = sliderValue; dutyCycle4 = map(sliderValue4.toInt(), 0, 100, 0, 255); break;
+        case 5: sliderValue5 = sliderValue; dutyCycle1 = map(sliderValue5.toInt(), 0, 100, 0, 255); break;
+        case 6: sliderValue6 = sliderValue; dutyCycle2 = map(sliderValue6.toInt(), 0, 100, 0, 255); break;
+        case 7: sliderValue7 = sliderValue; dutyCycle3 = map(sliderValue7.toInt(), 0, 100, 0, 255); break;
+        case 8: sliderValue8 = sliderValue; dutyCycle4 = map(sliderValue8.toInt(), 0, 100, 0, 255); break;
       }
     }
 
@@ -121,7 +123,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 2: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection2 = "manual0"; break;
-                  case 1: triggerSelection2 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection2 = "alwaysON1"; elementStatus2 = "on"; break;
                   case 2: triggerSelection2 = "timeClock2"; break;
                   case 3: triggerSelection2 = "timeCycle3"; break;
                   case 4: triggerSelection2 = "sensor4"; break;
@@ -130,7 +132,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 3: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection3 = "manual0"; break;
-                  case 1: triggerSelection3 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection3 = "alwaysON1"; elementStatus3 = "on"; break;
                   case 2: triggerSelection3 = "timeClock2"; break;
                   case 3: triggerSelection3 = "timeCycle3"; break;
                   case 4: triggerSelection3 = "sensor4"; break;
@@ -139,7 +141,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 4: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection4 = "manual0"; break;
-                  case 1: triggerSelection4 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection4 = "alwaysON1"; elementStatus4 = "on"; break;
                   case 2: triggerSelection4 = "timeClock2"; break;
                   case 3: triggerSelection4 = "timeCycle3"; break;
                   case 4: triggerSelection4 = "sensor4"; break;
@@ -148,7 +150,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 5: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection5 = "manual0"; break;
-                  case 1: triggerSelection5 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection5 = "alwaysON1"; elementStatus5 = "on"; break;
                   case 2: triggerSelection5 = "timeClock2"; break;
                   case 3: triggerSelection5 = "timeCycle3"; break;
                   case 4: triggerSelection5 = "sensor4"; break;
@@ -157,7 +159,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 6: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection6 = "manual0"; break;
-                  case 1: triggerSelection6 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection6 = "alwaysON1"; elementStatus6 = "on"; break;
                   case 2: triggerSelection6 = "timeClock2"; break;
                   case 3: triggerSelection6 = "timeCycle3"; break;
                   case 4: triggerSelection6 = "sensor4"; break;
@@ -166,7 +168,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 7: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection7 = "manual0"; break;
-                  case 1: triggerSelection7 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection7 = "alwaysON1"; elementStatus7 = "on"; break;
                   case 2: triggerSelection7 = "timeClock2"; break;
                   case 3: triggerSelection7 = "timeCycle3"; break;
                   case 4: triggerSelection7 = "sensor4"; break;
@@ -175,7 +177,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
         case 8: switch (triggerSelectionIndex.toInt()){
                   case 0: triggerSelection8 = "manual0"; break;
-                  case 1: triggerSelection8 = "alwaysON1"; elementStatus1 = "on"; break;
+                  case 1: triggerSelection8 = "alwaysON1"; elementStatus8 = "on"; break;
                   case 2: triggerSelection8 = "timeClock2"; break;
                   case 3: triggerSelection8 = "timeCycle3"; break;
                   case 4: triggerSelection8 = "sensor4"; break;
@@ -184,6 +186,29 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
                 break;
       } 
     }
+
+    if (message.indexOf("cycle") >=0){
+      int separatorIndex1 = message.indexOf("-");
+      int separatorIndex2 = message.indexOf("-",separatorIndex1 + 1);
+      int separatorIndex3 = message.indexOf("-",separatorIndex2 + 1);
+      String elementNumber = message.substring(separatorIndex1,separatorIndex1+1);
+      switch (elementNumber.toInt()){
+        case 1:
+          cycleOn1 = (message.substring(separatorIndex2, separatorIndex3)).toInt();
+          cycleOff1 = (message.substring(separatorIndex3)).toInt();
+          tout("cycle element number ");tout(elementNumber);" cycle on ";tout(cycleOn1);tout("cycleoff ");toutln(cycleOff1);
+          break;
+        case 2:
+                break;
+        case 3:
+                break;
+      }
+      
+      
+      
+
+    }
+
     notifyClients(getStateValues());
     notifyClients(getSensorValues());
   }
@@ -230,30 +255,3 @@ void websocketloop() {
 
 
 #endif
-
-
- /* previous slider control seciton
-
-    if (message.indexOf("1s") >= 0) {
-      sliderValue1 = message.substring(2);
-      dutyCycle1 = map(sliderValue1.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-    if (message.indexOf("2s") >= 0) {
-      sliderValue2 = message.substring(2);
-      dutyCycle2 = map(sliderValue2.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-
-    if (message.indexOf("3s") >= 0) {
-      sliderValue3 = message.substring(2);
-      dutyCycle3 = map(sliderValue3.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-
-    if (message.indexOf("4s") >= 0) {
-      sliderValue4 = message.substring(2);
-      dutyCycle4 = map(sliderValue4.toInt(), 0, 100, 0, 255);
-      //notifyClients(getStateValues());
-    }
-    */
