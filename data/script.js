@@ -42,20 +42,21 @@ function updateStatus(element) {
         document.getElementById("elementStatus"+elementNumber).innerHTML = "ON!";
         elementStatus = "on";
         // Disable the slider
-        if (elementNumber>4) document.getElementById("slider"+elementNumber).removeAttribute('disabled');
+        if (elementNumber>4) {
+            document.getElementById("slider"+elementNumber).removeAttribute('disabled');
+            var sliderValue = document.getElementById("slider"+elementNumber).value;
+        }
     }
     else {
         document.getElementById("elementStatus"+elementNumber).innerHTML = "OFF";
         elementStatus = "off";
         // Enable the slider
-        if (elementNumber>4) document.getElementById("slider"+elementNumber).setAttribute("disabled","true");
-
+        if (elementNumber>4) document.getElementById("slider"+elementNumber).setAttribute("disabled","true"); 
     }
-
-
     // Send S1on = "Status", Element 1, on/off
     var statusUpdate = "S" + elementNumber + elementStatus;
     websocket.send(statusUpdate);
+    websocket.send("M"+elementNumber+sliderValue.toString());
 }
 // SLIDER VALUE CHANGE
 function updateSliderPWM(element) {  
@@ -64,7 +65,7 @@ function updateSliderPWM(element) {
     document.getElementById("sliderValue"+elementNumber).innerHTML = sliderValue;
     websocket.send("M"+elementNumber+sliderValue.toString());
 }
-
+// TRIGGER CHANGE
 function triggerChange(element){
     var elementNumber = element.id.charAt(element.id.length-1);
     var triggerSelection = element.value;
@@ -92,14 +93,14 @@ function onMessage(event) {
 
     for (var i = 0; i < keys.length; i++){
         var key = keys[i];
-        var itemType = key.charAt(0); //  e = element on/off s= slider t = trigger
+        var itemType = key.substring(0,4); //  e = element on/off s= slider t = trigger
         var elementNumber = key.charAt(key.length-1);
         var keyValue = myObj[key];
         var triggerValueIndex = keyValue.charAt(keyValue.length-1); // if its a trigger get the idex from the last characture
         console.log("Counter:" + i + " Item:" + itemType + " Element:"+elementNumber + " key:"+ key + " Value:" + keyValue+ " triggerValueIndex = "+triggerValueIndex);
         
         // === STATUS ON/OFF UPDATE =====
-        if (itemType == "e"){
+        if (itemType == "elem"){
             var elementID = "element" + elementNumber;
             var elementStatusID = "elementStatus" + elementNumber;
             if (keyValue == "on"){
@@ -116,7 +117,7 @@ function onMessage(event) {
         }
         
         // ==== SLIDER VALUE UDPATE
-        if (itemType == "s"){
+        if (itemType == "slid"){
             document.getElementById(key).innerHTML = keyValue;
             document.getElementById("slider"+ elementNumber.toString()).value = myObj[key];
         }
@@ -128,7 +129,7 @@ function onMessage(event) {
         if (key == "fullDate")document.getElementById(key).innerHTML = keyValue;
 
         // == UPDATE TRIGGER VALUES
-        if (itemType == "t"){
+        if (itemType == "trig"){
             document.getElementById(key).selectedIndex = triggerValueIndex;
             // == SHOW OR HIDE TRIGGER VALUE INFORMATION
             switch(triggerValueIndex) {
@@ -157,7 +158,10 @@ function onMessage(event) {
                     document.getElementById("cycleTime"+elementNumber).style.display="none";
                     break;
             }
-
         }
+        if (itemType =="cycl"){
+            document.getElementById(key).innerHTML = keyValue;
+        }
+
     }
 }

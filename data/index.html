@@ -76,6 +76,10 @@
                     </select>
                     <!-- time CLOCK-->
                     <form id="clockTime1" class="triggerform" style="display:none;">
+                        <div class="currentCycleTimes">
+                            ON TIME:<span id="currentClockRunTime1"></span><br>
+                            OFF TIME:<span id="currentClockOffTime1"></span>
+                        </div>
                         <label for="clockTimeOn1">Start</label><br>
                         <input type="text" id="clockTimeOn1" name="clockTimeOn1"><br>
                         <label for="clockTimeOff1">End</label><br>
@@ -85,16 +89,16 @@
                     <!-- time CYCLE-->
                     <form id="cycleTime1" class="triggerform" style="display:none;">
                         <div class="currentCycleTimes">
-                             ON TIME:<span id="currentRunTime1"></span><br>
-                            OFF TIME:<span id="currentOffTime1"></span>
+                            RUN TIME:  <span id="cycleOn1"></span>  |  <span id = "cycleOnTimer1" ></span><br>
+                            OFF TIME:  <span id="cycleOff1"></span>  | <span id = "cycleOffTimer1"></span>
                         </div>
-                        <lable>(minutes)</lable>
+                       
                         <label for="cycleTimeOn1">Run Time</label><br>
                         <input type="text" id="cycleTimeOn1" name="cycleTimeOn1"><br>
                         <label for="cycleTimeOff1">Off Time</label><br>
                         <input type="text" id="cycleTimeOff1" name="cycleTimeOff1"><br>
-                        
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton1">
+                         <lable>(minutes)</lable><br>
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton1" class = "setButton">
                     </form>
                 </div>
                 
@@ -126,14 +130,19 @@
                         <lable>(minutes)</lable>
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton2">
                     </form>
-                    <!-- time CYCLE-->
-                    <form id="cycleTime2" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton2">
+                   <!-- time CYCLE-->
+                   <form id="cycleTime2" class="triggerform" style="display:none;">
+                        <div class="currentCycleTimes">
+                            RUN TIME:  <span id="cycleOn2"></span><br>
+                            OFF TIME:  <span id="cycleOff2"></span>
+                        </div>
+                    
+                        <label for="cycleTimeOn2">Run Time</label><br>
+                        <input type="text" id="cycleTimeOn2" name="cycleTimeOn2"><br>
+                        <label for="cycleTimeOff2">Off Time</label><br>
+                        <input type="text" id="cycleTimeOff2" name="cycleTimeOff2"><br>
+                        <lable>(minutes)</lable><br>
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton2" class = "setButton">
                     </form>
                 </div>
 
@@ -167,12 +176,17 @@
                     </form>
                     <!-- time CYCLE-->
                     <form id="cycleTime3" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton3">
+                        <div class="currentCycleTimes">
+                            RUN TIME:  <span id="cycleOn3"></span><br>
+                            OFF TIME:  <span id="cycleOff3"></span>
+                        </div>
+                       
+                        <label for="cycleTimeOn3">Run Time</label><br>
+                        <input type="text" id="cycleTimeOn3" name="cycleTimeOn3"><br>
+                        <label for="cycleTimeOff3">Off Time</label><br>
+                        <input type="text" id="cycleTimeOff3" name="cycleTimeOff3"><br>
+                         <lable>(minutes)</lable><br>
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton3" class = "setButton">
                     </form>
                 </div>
 
@@ -204,15 +218,20 @@
                         <lable>(minutes)</lable>
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton4">
                     </form>
-                    <!-- time CYCLE-->
-                    <form id="cycleTime4" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton4">
-                    </form>
+                   <!-- time CYCLE-->
+                   <form id="cycleTime4" class="triggerform" style="display:none;">
+                    <div class="currentCycleTimes">
+                        RUN TIME:  <span id="cycleOn4"></span><br>
+                        OFF TIME:  <span id="cycleOff4"></span>
+                    </div>
+                   
+                    <label for="cycleTimeOn4">Run Time</label><br>
+                    <input type="text" id="cycleTimeOn4" name="cycleTimeOn4"><br>
+                    <label for="cycleTimeOff4">Off Time</label><br>
+                    <input type="text" id="cycleTimeOff4" name="cycleTimeOff4"><br>
+                     <lable>(minutes)</lable><br>
+                    <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton4" class = "setButton">
+                </form>
                 </div>
             </div>
         </section> <!-- end AC section-->
@@ -259,12 +278,17 @@
                     </form>
                     <!-- time CYCLE-->
                     <form id="cycleTime5" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton5">
+                        <div class="currentCycleTimes">
+                            RUN TIME:  <span id="cycleOn5"></span><br>
+                            OFF TIME:  <span id="cycleOff5"></span>
+                        </div>
+                       
+                        <label for="cycleTimeOn5">Run Time</label><br>
+                        <input type="text" id="cycleTimeOn5" name="cycleTimeOn5"><br>
+                        <label for="cycleTimeOff5">Off Time</label><br>
+                        <input type="text" id="cycleTimeOff5" name="cycleTimeOff5"><br>
+                         <lable>(minutes)</lable><br>
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton5" class = "setButton">
                     </form>
                 </div>
 
@@ -301,15 +325,20 @@
                         <lable>(minutes)</lable>
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton6">
                     </form>
-                    <!-- time CYCLE-->
-                    <form id="cycleTime6" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton6">
-                    </form>
+                   <!-- time CYCLE-->
+                   <form id="cycleTime6" class="triggerform" style="display:none;">
+                    <div class="currentCycleTimes">
+                        RUN TIME:  <span id="cycleOn6"></span><br>
+                        OFF TIME:  <span id="cycleOff6"></span>
+                    </div>
+                   
+                    <label for="cycleTimeOn6">Run Time</label><br>
+                    <input type="text" id="cycleTimeOn6" name="cycleTimeOn6"><br>
+                    <label for="cycleTimeOff6">Off Time</label><br>
+                    <input type="text" id="cycleTimeOff6" name="cycleTimeOff6"><br>
+                     <lable>(minutes)</lable><br>
+                    <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton6" class = "setButton">
+                </form>
                 </div>
                 
                 <!-- DC CARD 3-->
@@ -347,12 +376,17 @@
                     </form>
                     <!-- time CYCLE-->
                     <form id="cycleTime7" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton7">
+                        <div class="currentCycleTimes">
+                            RUN TIME:  <span id="cycleOn7"></span><br>
+                            OFF TIME:  <span id="cycleOff7"></span>
+                        </div>
+                       
+                        <label for="cycleTimeOn1">Run Time</label><br>
+                        <input type="text" id="cycleTimeOn7" name="cycleTimeOn7"><br>
+                        <label for="cycleTimeOff7">Off Time</label><br>
+                        <input type="text" id="cycleTimeOff7" name="cycleTimeOff7"><br>
+                         <lable>(minutes)</lable><br>
+                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton7" class = "setButton">
                     </form>
                     
                 </div>
@@ -393,15 +427,20 @@
                         <lable>(minutes)</lable>
                         <input type="button" value="SET" onclick="setClockTime(this)" id="clockTimeButton8">
                     </form>
-                    <!-- time CYCLE-->
-                    <form id="cycleTime8" class="triggerform" style="display:none;">
-                        <label for="p1_cycle_run_time">Run Time</label><br>
-                        <input type="text" id="p1_cycle_run_time" name="p1_cycle_run_time"><br>
-                        <label for="p1_cycle_off_time">Off Time</label><br>
-                        <input type="text" id="p1_cycle_off_time" name="p1_cycle_off_time"><br>
-                        <lable>(minutes)</lable>
-                        <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton8">
-                    </form>
+                   <!-- time CYCLE-->
+                   <form id="cycleTime8" class="triggerform" style="display:none;">
+                    <div class="currentCycleTimes">
+                        RUN TIME:  <span id="cycleOn8"></span><br>
+                        OFF TIME:  <span id="cycleOff8"></span>
+                    </div>
+                   
+                    <label for="cycleTimeOn8">Run Time</label><br>
+                    <input type="text" id="cycleTimeOn8" name="cycleTimeOn8"><br>
+                    <label for="cycleTimeOff8">Off Time</label><br>
+                    <input type="text" id="cycleTimeOff8" name="cycleTimeOff8"><br>
+                     <lable>(minutes)</lable><br>
+                    <input type="button" value="SET" onclick="setCycleTime(this)" id="cycleTimeButton8" class = "setButton">
+                </form>
                 </div>
                 
             </div> 

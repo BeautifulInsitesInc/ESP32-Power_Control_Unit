@@ -105,9 +105,22 @@ int cycleOn6, cycleOff6;
 int cycleOn7, cycleOff7;
 int cycleOn8, cycleOff8;
 
+int oneMinute = 1000; // 1000*60 for minut
+int oneSecond = 1000;
+
+int cycleOnTimer1, cycleOffTimer1;
+int cycleOnTimer2, cycleOffTimer2;
+int cycleOnTimer3, cycleOffTimer3;
+int cycleOnTimer4, cycleOffTimer4;
+int cycleOnTimer5, cycleOffTimer5;
+int cycleOnTimer6, cycleOffTimer6;
+int cycleOnTimer7, cycleOffTimer7;
+int cycleOnTimer8, cycleOffTimer8;
+
+
 // ************* GLOBAL VARIABLES ***********************
 int dht_timer_start = millis();
-int dht_timer_period = 30; //time in seconds between readings
+int dht_timer_period = 60; //time in seconds between readings
 float dht_tempC = 0;
 float dht_tempF = 0;
 float dht_humidity = 0;

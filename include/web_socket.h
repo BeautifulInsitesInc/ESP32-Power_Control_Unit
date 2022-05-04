@@ -10,7 +10,7 @@ AsyncWebSocketClient* wsClient;
 //Json Variable to Hold Slider Values
 JSONVar stateValues;
 JSONVar sensorValues;
-//JSONVar triggerValues;
+JSONVar timerValues;
 
 
 //get Sensor Values
@@ -51,11 +51,26 @@ String getStateValues(){
   stateValues["triggerSelection7"] = String(triggerSelection7);
   stateValues["triggerSelection8"] = String(triggerSelection8);
 
-  stateValues["cycleOn1"] = String (cycleOn1);
-  stateValues["cycleOff1"] = String (cycleOff1);
+  stateValues["cycleOn1"] = String (cycleOn1); stateValues["cycleOff1"] = String (cycleOff1);
+  stateValues["cycleOn2"] = String (cycleOn2); stateValues["cycleOff2"] = String (cycleOff2);
+  stateValues["cycleOn3"] = String (cycleOn3); stateValues["cycleOff3"] = String (cycleOff3);
+  stateValues["cycleOn4"] = String (cycleOn4); stateValues["cycleOff4"] = String (cycleOff4);
+  stateValues["cycleOn5"] = String (cycleOn5); stateValues["cycleOff5"] = String (cycleOff5);
+  stateValues["cycleOn6"] = String (cycleOn6); stateValues["cycleOff6"] = String (cycleOff6);
+  stateValues["cycleOn7"] = String (cycleOn7); stateValues["cycleOff7"] = String (cycleOff7);
+  stateValues["cycleOn8"] = String (cycleOn8); stateValues["cycleOff8"] = String (cycleOff8);
+
 
   String jsonString = JSON.stringify(stateValues);
   toutln("Just ran GetstateValues :"); toutln(stateValues);
+  return jsonString;
+}
+
+String getTimerValues(){
+  int cycleOnRemaining1 = (cycleOnTimer1 - millis()) /1000; int cycleOffRemaining1 = (cycleOffTimer1 - millis())/1000;
+  if (cycleOnRemaining1 < 0) cycleOnRemaining1 = 0; if(cycleOffRemaining1 <0) cycleOffRemaining1 = 0;
+  timerValues["cycleOnRemaining1"] = String(cycleOnRemaining1); timerValues["cycleOffRemaining1"] = String(cycleOffRemaining1);
+  String jsonString = JSON.stringify(timerValues);
   return jsonString;
 }
 
@@ -68,6 +83,8 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     data[len] = 0;
     message = (char*)data;
     tout("websocket.h recieved message : "); toutln(message);
+    String messageType = message.substring(0,3);
+    tout("messageType : ");toutln(messageType);
 
     // ============== TURN ELEMENTS ON OR OFF ==============
     if (message.indexOf("S") >=0) {// "S" - status change. ie: S1on If the message is status change (on/off)
@@ -187,21 +204,27 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       } 
     }
 
-    if (message.indexOf("cycle") >=0){
+    if (messageType = "cyc"){
+      toutln("message cycle recieved ");toutln(message);
       int separatorIndex1 = message.indexOf("-");
-      int separatorIndex2 = message.indexOf("-",separatorIndex1 + 1);
-      int separatorIndex3 = message.indexOf("-",separatorIndex2 + 1);
-      String elementNumber = message.substring(separatorIndex1,separatorIndex1+1);
+      int separatorIndex2 = message.indexOf("-",separatorIndex1+1);
+      int separatorIndex3 = message.indexOf("-",separatorIndex2+1);
+      String elementNumber = message.substring(separatorIndex1+1,separatorIndex1+2);
+      String cycleOn = message.substring(separatorIndex2+1,separatorIndex3);
+      String cycleOff = message.substring(separatorIndex3+1);
+      
+      toutln(""); toutln(""); tout("elementxxxxxxxxxxxxxxxx number :");toutln(elementNumber);toutln("");
+      tout("cycleON :");tout(cycleOn);tout("  cycleOff :");toutln(cycleOff);
       switch (elementNumber.toInt()){
-        case 1:
-          cycleOn1 = (message.substring(separatorIndex2, separatorIndex3)).toInt();
-          cycleOff1 = (message.substring(separatorIndex3)).toInt();
-          tout("cycle element number ");tout(elementNumber);" cycle on ";tout(cycleOn1);tout("cycleoff ");toutln(cycleOff1);
-          break;
-        case 2:
-                break;
-        case 3:
-                break;
+        case 1: cycleOn1 = cycleOn.toInt(); cycleOff1 = cycleOff.toInt(); 
+                cycleOnTimer1 = millis() + (cycleOn1*oneMinute); cycleOffTimer1 = cycleOnTimer1 + (cycleOff1*oneMinute); break;
+        case 2: cycleOn2 = cycleOn.toInt(); cycleOff2 = cycleOff.toInt(); break;
+        case 3: cycleOn3 = cycleOn.toInt(); cycleOff3 = cycleOff.toInt(); break;
+        case 4: cycleOn4 = cycleOn.toInt(); cycleOff4 = cycleOff.toInt(); break;
+        case 5: cycleOn5 = cycleOn.toInt(); cycleOff5 = cycleOff.toInt(); break;
+        case 6: cycleOn6 = cycleOn.toInt(); cycleOff6 = cycleOff.toInt(); break;
+        case 7: cycleOn7 = cycleOn.toInt(); cycleOff7 = cycleOff.toInt(); break;
+        case 8: cycleOn8 = cycleOn.toInt(); cycleOff8 = cycleOff.toInt(); break;
       }
       
       

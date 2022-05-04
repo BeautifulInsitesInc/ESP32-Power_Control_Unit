@@ -40,6 +40,7 @@ void setup()
 }
 
 unsigned long testtimer = millis();
+unsigned long timerTimer = millis();
 void loop()
 {
   wifiManagerLoop();
@@ -50,6 +51,15 @@ void loop()
   getDHTReadings();
 
   
+
+// CYCLE TIMERS
+  if (triggerSelection1 == "timeCycle3"){
+    if (millis() >= cycleOnTimer1) {elementStatus1 = "on"; cycleOnTimer1 = millis() + ((cycleOff1 + cycleOn1) *oneMinute); cycleOffTimer1 = misslis() + (cycleOff1 * oneMinute)}
+    else if(millis() >= cycleOffTimer1) {elementStatus1 = "off"; cycleOnTimer1 = millis() +(cycleOn1*oneMinute); cycleOffTimer1 = millis() + (cycleOff1 * oneMinute)}
+
+  } 
+
+
   if (elementStatus1 == "on" || triggerSelection1 == "alwasyON1") digitalWrite(AC1, LOW);
   else digitalWrite(AC1, HIGH);
   if (elementStatus2 == "on" || triggerSelection2 == "alwasyON1")  digitalWrite(AC2, LOW);
@@ -58,7 +68,6 @@ void loop()
   else digitalWrite(AC3, HIGH);
   if (elementStatus4 == "on" || triggerSelection4 == "alwasyON1")  digitalWrite(AC4, LOW);
   else digitalWrite(AC4, HIGH);
-
 
   //Slider update
   if (elementStatus5 == "on" || triggerSelection5 == "alwasysON1") ledcWrite(ledChannel1, dutyCycle1);
@@ -70,11 +79,19 @@ void loop()
   if (elementStatus8 == "on" || triggerSelection8 == "alwasysON1") ledcWrite(ledChannel4, dutyCycle4);
   else ledcWrite(ledChannel4, 0);
 
+  
+
   if(millis() >= testtimer){
-    testtimer = millis()+15000;
+    testtimer = millis()+30000;
     //notifyClients(getStateValues());
     setLocalTime();
   }
+
+ if(millis() >= timerTimer){
+    timerTimer  = millis()+1000;
+    notifyClients(getTimerValues());
+  }
+
 
 }
 

@@ -189,3 +189,7 @@ input:checked+.slider:before {
     align-self: center;
     align-content: center;
   }
+
+  .setButton{
+    margin: 5px;
+  }

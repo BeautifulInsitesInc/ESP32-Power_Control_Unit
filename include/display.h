@@ -104,15 +104,11 @@ void normalText(){
 void displaySetup() {
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-
-
-
   
   if(!Display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     outln(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-  
 
   splashScreen();
  
