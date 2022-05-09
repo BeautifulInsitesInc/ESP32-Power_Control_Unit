@@ -35,12 +35,16 @@ void setup()
   dhtSetup();
 
   loadPreferences();
+  notifyClients(getStateValues());
   getDHTReadings();
 
 }
 
 unsigned long testtimer = millis();
 unsigned long timerTimer = millis();
+bool sendTimerUpdate = false;
+
+
 void loop()
 {
   wifiManagerLoop();
@@ -50,14 +54,29 @@ void loop()
   
   getDHTReadings();
 
-  
-
 // CYCLE TIMERS
   if (triggerSelection1 == "timeCycle3"){
-    if (millis() >= cycleOnTimer1) {elementStatus1 = "on"; cycleOnTimer1 = millis() + ((cycleOff1 + cycleOn1) *oneMinute); cycleOffTimer1 = misslis() + (cycleOff1 * oneMinute)}
-    else if(millis() >= cycleOffTimer1) {elementStatus1 = "off"; cycleOnTimer1 = millis() +(cycleOn1*oneMinute); cycleOffTimer1 = millis() + (cycleOff1 * oneMinute)}
-
-  } 
+    sendTimerUpdate = true;
+    bool sendChange = false;
+    if (millis() >= cycleOnMillis1) {
+      elementStatus1 = "off"; cycleOnMillis1 = millis() + ((cycleOff1 + cycleOn1) *oneMinute);
+      cycleOffMillis1 = millis() + (cycleOff1 * oneMinute);
+      toutln("turning element1 off with timer");
+      sendChange = true;
+      }
+    else if(millis() >= cycleOffMillis2) {
+      elementStatus1 = "on"; cycleOffMillis2 = millis() +((cycleOn1+cycleOff1)*oneMinute);
+      cycleOnMillis1 = millis() + (cycleOn1 * oneMinute);
+      toutln("turning element1 on with timer");
+      sendChange = true;
+      }
+    if (sendChange == true) {
+      toutln("notifying clients");
+      notifyClients(getStateValues());
+      sendChange=false;
+      }
+  }
+  else sendTimerUpdate = false; // only send if there is a cycle timer on
 
 
   if (elementStatus1 == "on" || triggerSelection1 == "alwasyON1") digitalWrite(AC1, LOW);
@@ -87,10 +106,10 @@ void loop()
     setLocalTime();
   }
 
- if(millis() >= timerTimer){
-    timerTimer  = millis()+1000;
-    notifyClients(getTimerValues());
-  }
+ if (sendTimerUpdate == true){
+   if(millis() >= timerTimer){timerTimer  = millis()+1000; notifyClients(getTimerValues());}
+ }
+ 
 
 
 }

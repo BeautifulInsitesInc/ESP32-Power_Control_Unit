@@ -193,3 +193,11 @@ input:checked+.slider:before {
   .setButton{
     margin: 5px;
   }
+
+  .countdownTimers{
+    align-self: right;
+    align-content: right;
+    text-align: right;
+    text-align-last: right;
+    align-items: flex-end;
+  }

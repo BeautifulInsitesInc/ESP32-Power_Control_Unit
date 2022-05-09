@@ -1,8 +1,9 @@
 //#include <DallasTemperature.h> // For DS18B20 Water tempurature sensor
 #include <DHT.h> // Humidity and tempurature sensor
 
-float convertCtoF(float c){float f = c*1.8 + 32;return f;} // Convert default C into F
 
+
+float convertCtoF(float c){float f = c*1.8 + 32;return f;} // Convert default C into F
 
 // ========== DHT Sensor ==============================
 #define DHTTYPE DHT11   // DHT 11
@@ -27,7 +28,9 @@ void getDHTReadings(){
       dht_tempF = dht.readTemperature(true);
     }
     if (isnan(dht.readHumidity())) dht_humidity = 0;
-    else dht_humidity = dht.readHumidity();
+    else dht_humidity = dht.readHumidity() * humidity_calibration_variable;
+
+
   
 
     // --- debugging ----

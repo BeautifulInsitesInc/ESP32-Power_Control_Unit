@@ -19,6 +19,7 @@ void savePreferences()
     preferences.putString("elementStatus8", elementStatus1);
     // Trigger Values
     preferences.putString("triggerSelection1", triggerSelection1);
+    tout(" Just ran save values - triggerSelction1 saved as :"); toutln(triggerSelection1);
     preferences.putString("triggerSelection2", triggerSelection2);
     preferences.putString("triggerSelection3", triggerSelection3);
     preferences.putString("triggerSelection4", triggerSelection4);
@@ -32,14 +33,14 @@ void savePreferences()
     preferences.putString("sliderValue7", sliderValue7);
     preferences.putString("sliderValue8", sliderValue8);
     // CYCLE TIMER TRIGGER
-    preferences.putInt("cycleOn1", cycleOn1); preferences.putInt("cycleOn1", cycleOn1);
-    preferences.putInt("cycleOn2", cycleOn2); preferences.putInt("cycleOn2", cycleOn2);
-    preferences.putInt("cycleOn3", cycleOn3); preferences.putInt("cycleOn3", cycleOn3);
-    preferences.putInt("cycleOn4", cycleOn4); preferences.putInt("cycleOn4", cycleOn4);
-    preferences.putInt("cycleOn5", cycleOn5); preferences.putInt("cycleOn5", cycleOn5);
-    preferences.putInt("cycleOn6", cycleOn6); preferences.putInt("cycleOn6", cycleOn6);
-    preferences.putInt("cycleOn7", cycleOn7); preferences.putInt("cycleOn7", cycleOn7);
-    preferences.putInt("cycleOn8", cycleOn8); preferences.putInt("cycleOn8", cycleOn8);
+    preferences.putInt("cycleOn1", cycleOn1); preferences.putInt("cycleOff1", cycleOff1);
+    preferences.putInt("cycleOn2", cycleOn2); preferences.putInt("cycleOff2", cycleOff2);
+    preferences.putInt("cycleOn3", cycleOn3); preferences.putInt("cycleOff3", cycleOff3);
+    preferences.putInt("cycleOn4", cycleOn4); preferences.putInt("cycleOff4", cycleOff4);
+    preferences.putInt("cycleOn5", cycleOn5); preferences.putInt("cycleOff5", cycleOff5);
+    preferences.putInt("cycleOn6", cycleOn6); preferences.putInt("cycleOff6", cycleOff6);
+    preferences.putInt("cycleOn7", cycleOn7); preferences.putInt("cycleOff7", cycleOff7);
+    preferences.putInt("cycleOn8", cycleOn8); preferences.putInt("cycleOff8", cycleOff8);
 
     preferences.end();
 }
@@ -58,6 +59,8 @@ void loadPreferences()
 
     // Trigger Values
     triggerSelection1 = preferences.getString("triggerSelection1", "manual0");
+    tout(" Just loaded valuess values - triggerSelction1 loaded as :"); toutln(triggerSelection1);
+
     triggerSelection2 = preferences.getString("triggerSelection2", "manual0");
     triggerSelection3 = preferences.getString("triggerSelection3", "manual0");
     triggerSelection4 = preferences.getString("triggerSelection4", "manual0");
@@ -70,6 +73,15 @@ void loadPreferences()
     sliderValue6 = preferences.getString("sliderValue6", "0");
     sliderValue7 = preferences.getString("sliderValue7", "0");
     sliderValue8 = preferences.getString("sliderValue8", "0");
+
+    cycleOn1 = preferences.getInt("cycleOn1", 0); cycleOff1 = preferences.getInt("cycleOff1",0);
+    cycleOn2 = preferences.getInt("cycleOn2", 0); cycleOff2 = preferences.getInt("cycleOff2",0);
+    cycleOn3 = preferences.getInt("cycleOn3", 0); cycleOff3 = preferences.getInt("cycleOff3",0);
+    cycleOn4 = preferences.getInt("cycleOn4", 0); cycleOff4 = preferences.getInt("cycleOff4",0);
+    cycleOn5 = preferences.getInt("cycleOn5", 0); cycleOff5 = preferences.getInt("cycleOff5",0);
+    cycleOn6 = preferences.getInt("cycleOn6", 0); cycleOff6 = preferences.getInt("cycleOff6",0);
+    cycleOn7 = preferences.getInt("cycleOn7", 0); cycleOff7 = preferences.getInt("cycleOff7",0);
+    cycleOn8 = preferences.getInt("cycleOn8", 0); cycleOff8 = preferences.getInt("cycleOff8",0);
 
     preferences.end();
 }

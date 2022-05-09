@@ -60,16 +60,15 @@ String getStateValues(){
   stateValues["cycleOn7"] = String (cycleOn7); stateValues["cycleOff7"] = String (cycleOff7);
   stateValues["cycleOn8"] = String (cycleOn8); stateValues["cycleOff8"] = String (cycleOff8);
 
-
   String jsonString = JSON.stringify(stateValues);
   toutln("Just ran GetstateValues :"); toutln(stateValues);
   return jsonString;
 }
 
 String getTimerValues(){
-  int cycleOnRemaining1 = (cycleOnTimer1 - millis()) /1000; int cycleOffRemaining1 = (cycleOffTimer1 - millis())/1000;
-  if (cycleOnRemaining1 < 0) cycleOnRemaining1 = 0; if(cycleOffRemaining1 <0) cycleOffRemaining1 = 0;
-  timerValues["cycleOnRemaining1"] = String(cycleOnRemaining1); timerValues["cycleOffRemaining1"] = String(cycleOffRemaining1);
+  int countdownOn1 = (cycleOnMillis1-millis()) /oneMinute; int countdownOff1 = (cycleOffMillis1-millis())/oneMinute;
+  if (countdownOn1 > cycleOn1) countdownOn1 = 0; if(countdownOff1 >cycleOff1) countdownOff1 = 0;
+  timerValues["countdownOn1"] = String(countdownOn1); timerValues["countdownOff1"] = String(countdownOff1);
   String jsonString = JSON.stringify(timerValues);
   return jsonString;
 }
@@ -217,14 +216,21 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
       tout("cycleON :");tout(cycleOn);tout("  cycleOff :");toutln(cycleOff);
       switch (elementNumber.toInt()){
         case 1: cycleOn1 = cycleOn.toInt(); cycleOff1 = cycleOff.toInt(); 
-                cycleOnTimer1 = millis() + (cycleOn1*oneMinute); cycleOffTimer1 = cycleOnTimer1 + (cycleOff1*oneMinute); break;
-        case 2: cycleOn2 = cycleOn.toInt(); cycleOff2 = cycleOff.toInt(); break;
-        case 3: cycleOn3 = cycleOn.toInt(); cycleOff3 = cycleOff.toInt(); break;
-        case 4: cycleOn4 = cycleOn.toInt(); cycleOff4 = cycleOff.toInt(); break;
-        case 5: cycleOn5 = cycleOn.toInt(); cycleOff5 = cycleOff.toInt(); break;
-        case 6: cycleOn6 = cycleOn.toInt(); cycleOff6 = cycleOff.toInt(); break;
-        case 7: cycleOn7 = cycleOn.toInt(); cycleOff7 = cycleOff.toInt(); break;
-        case 8: cycleOn8 = cycleOn.toInt(); cycleOff8 = cycleOff.toInt(); break;
+                cycleOnMillis1 = millis() + (cycleOn1*oneSecond); cycleOffMillis1 = millis()+(cycleOn1+cycleOff1)*oneSecond; elementStatus1 = "on"; break;
+        case 2: cycleOn2 = cycleOn.toInt(); cycleOff2 = cycleOff.toInt(); 
+                cycleOnMillis2 = millis() + (cycleOn2*oneSecond); cycleOffMillis2 = millis()+(cycleOn2+cycleOff2)*oneSecond; elementStatus2 = "on"; break;
+        case 3: cycleOn3 = cycleOn.toInt(); cycleOff3 = cycleOff.toInt();
+                cycleOnMillis3 = millis() + (cycleOn3*oneSecond); cycleOffMillis3 = millis()+(cycleOn3+cycleOff3)*oneSecond; elementStatus3 = "on"; break;
+        case 4: cycleOn4 = cycleOn.toInt(); cycleOff4 = cycleOff.toInt(); 
+                cycleOnMillis4 = millis() + (cycleOn4*oneSecond); cycleOffMillis4 = millis()+(cycleOn4+cycleOff4)*oneSecond; elementStatus4 = "on"; break;
+        case 5: cycleOn5 = cycleOn.toInt(); cycleOff5 = cycleOff.toInt(); 
+                cycleOnMillis5 = millis() + (cycleOn5*oneSecond); cycleOffMillis5 = millis()+(cycleOn5+cycleOff5)*oneSecond; elementStatus5 = "on"; break;
+        case 6: cycleOn6 = cycleOn.toInt(); cycleOff6 = cycleOff.toInt();
+                cycleOnMillis6 = millis() + (cycleOn6*oneSecond); cycleOffMillis6 = millis()+(cycleOn6+cycleOff6)*oneSecond; elementStatus6 = "on"; break;
+        case 7: cycleOn7 = cycleOn.toInt(); cycleOff7 = cycleOff.toInt(); 
+                cycleOnMillis7 = millis() + (cycleOn7*oneSecond); cycleOffMillis7 = millis()+(cycleOn7+cycleOff7)*oneSecond; elementStatus7 = "on"; break;
+        case 8: cycleOn8 = cycleOn.toInt(); cycleOff8 = cycleOff.toInt(); 
+                cycleOnMillis8 = millis() + (cycleOn8*oneSecond); cycleOffMillis8 = millis()+(cycleOn8+cycleOff8)*oneSecond; elementStatus8 = "on"; break;
       }
       
       

@@ -56,7 +56,7 @@ function updateStatus(element) {
     // Send S1on = "Status", Element 1, on/off
     var statusUpdate = "S" + elementNumber + elementStatus;
     websocket.send(statusUpdate);
-    websocket.send("M"+elementNumber+sliderValue.toString());
+    if (elementNumber>4) {websocket.send("M"+elementNumber+sliderValue.toString());}
 }
 // SLIDER VALUE CHANGE
 function updateSliderPWM(element) {  
@@ -160,6 +160,10 @@ function onMessage(event) {
             }
         }
         if (itemType =="cycl"){
+            document.getElementById(key).innerHTML = keyValue;
+        }
+
+        if (itemType == "coun"){
             document.getElementById(key).innerHTML = keyValue;
         }
 
